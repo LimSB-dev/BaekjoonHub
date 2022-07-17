@@ -7,4 +7,4 @@ for tc in range(1,t+1):
   else:
     b = q + ((w - r) * s)
     
-  print(min(a, b))
+  print(f"#{tc} {min(a, b)}")
