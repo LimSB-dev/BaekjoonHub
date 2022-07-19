@@ -30,7 +30,6 @@ for tc in range(1, int(input())+1):
             r += dr[direction]
             c += dc[direction]
 
-    print(f'{tc}')
+    print(f'#{tc}')
     for row in answer:
         print(*row)
-    print()
