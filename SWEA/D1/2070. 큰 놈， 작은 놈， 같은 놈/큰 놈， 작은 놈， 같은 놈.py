@@ -1,8 +1,8 @@
 for tc in range(1, int(input())+1):
     a, b = map(int, input().split())
     if a > b:
-        print('>')
+        print(f'#{tc} >')
     elif a == b:
-        print('=')
+        print(f'#{tc} =')
     else:
-        print('<')
+        print(f'#{tc} <')
