@@ -11,9 +11,7 @@ for _ in range(P):
         if Y <= y and y <= (Y + H):
             answer += 1
     # 반 원 내부에 있는지
-    elif (x - (X))**2 + (y - (Y + R))**2 <= (H / 2)**2:
-        answer += 1
-    elif (x - (X + W))**2 + (y - (Y + R))**2 <= (H / 2)**2:
+    elif (x - (X))**2 + (y - (Y + R))**2 <= (H / 2)**2 or (x - (X + W))**2 + (y - (Y + R))**2 <= (H / 2)**2:
         answer += 1
 
 print(answer)
