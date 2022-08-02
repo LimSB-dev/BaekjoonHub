@@ -2,7 +2,6 @@
 
 [SWEA](https://swexpertacademy.com), [Beakjoon](https://www.acmicpc.net), [Programmers](https://programmers.co.kr) 알고리즘 문제 풀이
 
----
 ## 알고리즘 문제 학습 방법
 ### 1. 다른 사람의 코드를 보는 것은 나쁜 것이 아니라 필수이다.
 
