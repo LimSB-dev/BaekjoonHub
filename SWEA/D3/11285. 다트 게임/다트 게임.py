@@ -1,6 +1,7 @@
 import math
+t = int(input())
 answers = []
-for tc in range(1, int(input()) + 1):
+for tc in range(1, t + 1):
     n = int(input())
     answer = 0
     for _ in range(n):
