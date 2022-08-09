@@ -14,7 +14,7 @@ for tc in range(1, t + 1):
 
     # 가장 많은 카드에 적힌 숫자
     index = 0
-    # 그 카드가 몇 장인지
+    # 그 카드가 몇 장인지 담을 변수
     max_number = count_arr[0]
 
     # count_arr의 0 ~ 9 까지 index를 순회
