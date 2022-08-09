@@ -1,3 +1,6 @@
+import sys
+sys.stdin = open('input.txt')
+
 for tc in range(10):
     dump = int(input())
     boxes = list(map(int, input().split()))

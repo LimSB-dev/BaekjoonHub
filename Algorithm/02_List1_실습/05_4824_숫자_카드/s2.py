@@ -7,7 +7,7 @@ for tc in range(1, t + 1):
     n = input()
     num = input()
     counter = [0] * 10  # 일의 자리수를 담을 카운터 리스트 생성
-    for _ in range(n):
+    for _ in range(int(n)):
         if not int(num[0]):
             counter[0] += 1
             num = num[1:]
