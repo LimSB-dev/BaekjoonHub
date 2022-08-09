@@ -23,15 +23,19 @@ for tc in range(1, t + 1):
                 # print(f'now : {now_station}, answer : {answer}')
                 break
 
-            if now_station + (k - i) >= n:
-                now_station += k - i
+            # 만약 현재 정거장에서 한번 충전으로 이동 가능 거리가 종점을 벗어난다면 for문 탈출
+            if now_station + k >= n:
+                now_station += k
                 break
 
+            # 만약 i 가 k - 1 이 될 때까지 반복문을 탈출하지 못했다면 answer = 0이 된 상태로 for문 탈출
             if i == k - 1:
                 answer = 0
                 break
 
+        # 만약 answer = 0 이라면
         if not answer:
+            # 현재 정거장을 종점으로 바꿔서 while문 탈출
             now_station = n
 
     print(f'#{tc} {answer}')
