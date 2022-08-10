@@ -4,7 +4,7 @@ for tc in range(1, t + 1):
     answer = 1
     sudoku = [list(map(int, input().split())) for _ in range(9)]
 
-    # check row & column
+    # 카운팅 정렬을 통한 row & column check
     for row in range(9):
         count_row = [0] * 10
         count_col = [0] * 10
@@ -17,7 +17,7 @@ for tc in range(1, t + 1):
                 answer = 0
                 break
 
-    # check 3 X 3 box
+    # 카운팅 정렬을 통한 3 X 3 box check
     for row in range(3):
         for col in range(3):
             count_box = [0] * 10
