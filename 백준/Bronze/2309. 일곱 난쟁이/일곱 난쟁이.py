@@ -1,24 +1,17 @@
-# 난쟁이의 수 = 9, 일곱 난쟁이 키의 합 = 100으로 고정이지만 확장성을 위해 변수 t, sum_height 생성
-t = 9
-sum_height = 100
+from itertools import combinations
 
-heights = [0] * t
+li = []
 
-for i in range(t):
+for _ in range(9):
     n = int(input())
-    heights[i] += n
+    li.append(n)
 
-for i in range(1 << t):
-    seven_height = 0
-    answer = []
-    for j in range(t):
-        if i & (1 << j):
-            seven_height += heights[j]
-            answer.append(heights[j])
-
-    if seven_height == sum_height and len(answer) == 7:
-        answer.sort()
+for i in combinations(li, 7):
+    if sum(i) == 100:
+        anw = list(i)
         break
 
-for i in answer:
+anw.sort()
+
+for i in anw:
     print(i)
