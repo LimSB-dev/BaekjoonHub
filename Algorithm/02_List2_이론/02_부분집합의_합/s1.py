@@ -6,7 +6,7 @@ sys.stdin = open("input.txt")
 def sum_of_subset(arr):
     # 부분집합의 합이 하나라도 0이람면 1로 바뀌고 반복문 탈출
     answer = 0
-    # 1 >> 10 은 비트 연산자로 2진법 상태에서 1을 10칸 이동 시켜주는것을 의미한다.
+    # 1 << 10 은 비트 연산자로 2진법 상태에서 1을 10칸 이동 시켜주는것을 의미한다.
     # 0000 0000 0001 ( 1 ) -> 0100 0000 0000 ( 2^10 )
     for i in range(1 << 10):
         # 부분집합의 합을 담을 변수
@@ -18,11 +18,10 @@ def sum_of_subset(arr):
                 subset += arr[j]
 
                 # 부분집합의 합이 0이라면 answer 값에 1을 대입후 반복문 탈출
-                if not subset:
+                if subset == 0:
                     answer = 1
-                    print(i, j)
                     break
-        if answer:
+        if answer != 0:
             break
     return answer
 
