@@ -1,41 +1,28 @@
 import sys
 sys.stdin = open('input.txt')
 
-for _ in range(10):
+t = int(input())
+
+for tc in range(1, t + 1):
+    # 보라색 영역을 담을 변수
     answer = 0
-    tc = int(input())
-    matrix = [list(map(int, input().split())) for _ in range(100)]
-    # 가장 큰 합을 담을 변수
-    max_sum_value = 0
+    n = int(input())
+    # 10 x 10 배열 생성
+    matrix = [[0] * 10 for _ in range(10)]
 
-    # / 대각선의 합을 담을 변수
-    sum_slash = 0
-    # \ 대각선의 합을 담을 변수
-    sum_back_slash = 0
+    # 빨강, 파랑의 영역을 반복문으로 입력 받는다.
+    for i in range(n):
+        x1, y1, x2, y2, color = map(int, input().split())    
+        # 배열에 색칠하기
+        for row in range(10):
+            for col in range(10):
+                if x1 <= row <= x2 and y1 <= col <= y2:
+                    matrix[row][col] += color
 
-    # 반복문으로 /,\ 속의 값을 다 덧셈
-    for i in range(100):
-        sum_slash += matrix[i][i]
-        sum_back_slash += matrix[99 - i][99 - i]
+    # 보라색 영역 개수 세기
+    for row in range(10):
+        for col in range(10):
+            if matrix[row][col] == 3:
+                answer += 1
 
-    # 최대값과 대소 비교 후 대입
-    if max_sum_value < sum_slash:
-        max_sum_value = sum_slash
-    if max_sum_value < sum_back_slash:
-        max_sum_value = sum_back_slash
-
-    # 반복문으로 가로 세로의 값을 다 덧셈
-    for row in range(100):
-        sum_row = 0
-        sum_col = 0
-        for col in range(100):
-            sum_row += matrix[row][col]
-            sum_col += matrix[col][row]
-
-        # 최대값과 대소 비교 후 대입
-        if max_sum_value < sum_row:
-            max_sum_value = sum_row
-        if max_sum_value < sum_col:
-            max_sum_value = sum_col
-
-    print(f'#{tc} {max_sum_value}')
+    print(f'#{tc} {answer}')
