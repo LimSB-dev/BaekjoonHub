@@ -15,6 +15,7 @@ for i in range(10):
             break
 
     while row > 0:
+        
         # 왼쪽 확인
         has_left = False
         while col > 0 and matrix[row][col - 1] == 1:
@@ -25,7 +26,7 @@ for i in range(10):
         if not has_left:
             while col < 99 and matrix[row][col + 1] == 1:
                 col += 1
-
+        
         row -= 1
-
-    print(f'{tc} {col}')
+        
+    print(f'#{tc} {col}')
