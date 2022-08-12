@@ -2,53 +2,63 @@ import sys
 sys.stdin = open('input.txt')
 
 for tc in range(1, int(input()) + 1):
-    answer = 0
     n = int(input())
-    bus = [list(map(int, input().split())) for _ in range(n)]
+    counter = [0] * 1001
 
-    # 일반
-    normal = bus[0]
-    # 급행
-    express = []
-    # 광역 급행
-    wide_area_express = []
+    for _ in range(n):
+        bus = list(map(int, input().split()))
 
-    # 급행
-    # 짝수
-    if bus[1][0] % 2 == 0:
-        for i in bus[1]:
-            # 마지막 정거장은 필수
-            if i == n - 1:
-                express.append(i)
-            elif i % 2 == 0:
-                express.append(i)
-    # 홀수
-    else:
-        for i in bus[1]:
-            # 마지막 정거장은 필수
-            if i == n - 1:
-                express.append(i)
-            elif i % 2 == 1:
-                express.append(i)
+        # 일반
+        if bus[0] == 1:
+            for i in range(bus[1], bus[2] + 1):
+                counter[i - 1] += 1
 
-    # 광역 급행
-    # 짝수
-    if bus[1][0] % 2 == 0:
-        for i in bus[2]:
-            # 마지막 정거장은 필수
-            if i == n - 1:
-                wide_area_express.append(i)
-            elif i % 4 == 0:
-                wide_area_express.append(i)
-    # 홀수
-    else:
-        for i in bus[2]:
-            # 마지막 정거장은 필수
-            if i == n - 1:
-                wide_area_express.append(i)
-            elif i % 3 == 0 and i % 10 != 0:
-                wide_area_express.append(i)
+        # 급행
+        elif bus[0] == 2:
+            for i in range(bus[1], bus[2] + 1):
+                # 짝수
+                if bus[1] % 2 == 0:
+                    # 첫 정거장은 필수
+                    if i == bus[1]:
+                        counter[i - 1] += 1
+                    # 마지막 정거장은 필수
+                    elif i == bus[2]:
+                        counter[i - 1] += 1
+                    elif i % 2 == 0:
+                        counter[i - 1] += 1
+                # 홀수
+                else:
+                    # 첫 정거장은 필수
+                    if i == bus[1]:
+                        counter[i - 1] += 1
+                    # 마지막 정거장은 필수
+                    elif i == bus[2]:
+                        counter[i - 1] += 1
+                    elif i % 2 == 1:
+                        counter[i - 1] += 1
 
-    
+        # 광역 급행
+        else:
+            for i in range(bus[1], bus[2] + 1):
+                # 짝수
+                if bus[1] % 2 == 0:
+                    # 첫 정거장은 필수
+                    if i == bus[1]:
+                        counter[i - 1] += 1
+                    # 마지막 정거장은 필수
+                    elif i == bus[2]:
+                        counter[i - 1] += 1
+                    elif i % 4 == 0:
+                        counter[i - 1] += 1
+                # 홀수
+                else:
+                    # 첫 정거장은 필수
+                    if i == bus[1]:
+                        counter[i - 1] += 1
+                    # 마지막 정거장은 필수
+                    elif i == bus[2]:
+                        counter[i - 1] += 1
+                    elif i % 3 == 0 and i % 10 != 0:
+                        counter[i - 1] += 1
 
-    print(f'#{tc} {len(answer)}')
+    print(f'#{tc} {max(counter)}')
