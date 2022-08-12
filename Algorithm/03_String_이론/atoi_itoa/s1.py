@@ -1,17 +1,37 @@
-import sys
-sys.stdin = open('input.txt')
+def atoi(number):
+    int_number = 0
 
-t = int(input())
+    for char in number:
+        int_number *= 10
+        int_number += ord(char) - ord('0')
 
-for tc in range(1, t + 1):
-    n = int(input())
-    arr = list(map(int, input().split()))
+    return int_number
 
-    # 버블 탐색
-    for i in range(n-1, 0, -1):
-        for j in range(i):
-            if arr[j] > arr[j + 1]:
-                arr[j], arr[j + 1] = arr[j + 1], arr[j]
 
-    print(f'#{tc}', end=' ')
-    print(*arr)
+def itoa(number):
+    if number == 0:
+        return '0'
+
+    is_positive = True
+    if number < 0:
+        is_positive = False
+        number = -number
+
+    str_number = ''
+    while number > 0:
+        number, remainder = number // 10, number % 10  # divmod(number, 10)
+        str_number = chr(ord('0') + remainder) + str_number
+
+    if not is_positive:
+        str_number = '-' + str_number
+
+    return str_number
+
+
+result = atoi('123')
+print(type(result))
+print(result)
+
+result = itoa(123)
+print(type(result))
+print(result)
