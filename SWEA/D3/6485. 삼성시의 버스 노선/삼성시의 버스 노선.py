@@ -2,17 +2,18 @@ t = int(input())
 
 for tc in range(1, t + 1):
     n = int(input())
-    station = [0] * 5000
-    for _ in range(n):
+    station_arr = [[0, 0] for _ in range(n)]
+    for i in range(n):
         a, b = map(int, input().split())
-        for i in range(a-1 , b):
-            station[i] += 1
+        station_arr[i] = [a, b]
 
     p = int(input())
 
     answer_arr = [0] * p
     for i in range(p):
-        answer_arr[i] += station[int(input()) - 1]
+        station = int(input())
+        for j in range(n):
+            if station_arr[j][0] <= station <= station_arr[j][1]:
+                answer_arr[i] += 1
 
-    print(f'#{tc}', end=' ')
-    print(*answer_arr)
+    print(f'#{tc}', *answer_arr)
