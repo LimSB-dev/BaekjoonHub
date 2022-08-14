@@ -4,6 +4,7 @@ for tc in range(1, t + 1):
     li = list(input().split())
     robots = {'O': [1, 0], 'B': [1, 0]}
     answer = 0
+
     for i in range(1, len(li)-1, 2):
         name = li[i]
         button = int(li[i+1])
