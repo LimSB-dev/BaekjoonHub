@@ -1,7 +1,10 @@
+import sys
+input = sys.stdin.readline
+
 words = []
 
 for _ in range(2):
-  words.append(list(map(str,input().rstrip())))
+  words.append(input().strip())
 
 a = len(words[0])
 b = len(words[1])
@@ -14,6 +17,5 @@ for i in range(1,a+1):
       dp[i][j] = dp[i-1][j-1] + 1
     else:
       dp[i][j] = max(dp[i-1][j],dp[i][j-1])
-      continue
 
 print(dp[a][b])
