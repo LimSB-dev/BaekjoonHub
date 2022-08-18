@@ -1,15 +1,14 @@
 t = int(input())
 
-
 for i in range(1,t+1):
   n = int(input())
-  li = list(map(int,input().split()))
-  max = 0
-  sum = 0
+  arr = list(map(int,input().split()))
+  max_value = 0
+  sum_value = 0
   for j in range(n-1,-1,-1):
-    if li[j] > max:
-      max = li[j]
+    if arr[j] > max_value:
+      max_value = arr[j]
     else:
-      sum += max - li[j]
+      sum_value += max_value - arr[j]
   
-  print('#%d %d'%(i, sum))
+  print(f'#{i} {sum_value}')
