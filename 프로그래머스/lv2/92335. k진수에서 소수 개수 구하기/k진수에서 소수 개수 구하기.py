@@ -14,10 +14,12 @@ def is_prime(num):
             return False
     return True
 
+
 def solution(n, k):
     answer = 0 
     arr = list(trans(n, k).split('0'))
     for i in arr:
+        # 0이 연속으로 있을 경우 빈 str을 list가 가지고 있다.
         if i and i != '1':
             if is_prime(int(i)):
                 answer += 1
