@@ -1,13 +1,19 @@
-t = int(input())
+import sys
+sys.stdin = open('input.txt')
 
-for tc in range(1, t + 1):
+
+def dp(num):
+    if num == 1:
+        return 1
+    elif num == 2:
+        return 3
+    else:
+        return dp(num - 1) + 2 * dp(num - 2)
+
+
+for tc in range(1, int(input()) + 1):
     n = int(input())
-    arr = [[1] * (i + 1) for i in range(n)]
+    n //= 10
+    answer = dp(n)
 
-    for row in range(2, n):
-        for col in range(1, row):
-            arr[row][col] = arr[row - 1][col - 1] + arr[row - 1][col]
-
-    print(f'#{tc}')
-    for i in range(n):
-        print(*arr[i])
+    print(f'#{tc} {answer}')
