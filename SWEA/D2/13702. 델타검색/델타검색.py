@@ -1,28 +1,27 @@
+dr = [-1, 1, 0, 0]
+dc = dr[::-1]
+
+
+def make_abs(row, col):
+    sum_value = 0
+    for direction in range(4):
+        nrow = row + dr[direction]
+        ncol = col + dc[direction]
+        if 0 <= nrow < n and 0 <= ncol < n:
+            value = matrix[row][col] - matrix[nrow][ncol]
+            if value >= 0:
+                sum_value += value
+            else:
+                sum_value -= value
+    return sum_value
+
+
 for tc in range(1, 11):
+    answer = 0
     n = int(input())
     matrix = [list(map(int, input().split())) for _ in range(n)]
-    answer = 0
-
-    for y in range(n):
-        for x in range(n):
-            # 가로 덧셈
-            # list out of range
-            if x != n - 1:
-                y_value = matrix[y][x] - matrix[y][x + 1]
-                # 절대값 혹은 abs() 사용
-                if y_value < 0:
-                    y_value *= -1
-                answer += y_value
-
-            # 세로 덧셈
-            # list out of range
-            if y != n - 1:
-                x_value = matrix[y][x] - matrix[y + 1][x]
-                # 절대값 혹은 abs() 사용
-                if x_value < 0:
-                    x_value *= -1
-                answer += x_value
-
-    answer *= 2
+    for row in range(n):
+        for col in range(n):
+            answer += make_abs(row, col)
 
     print(f'#{tc} {answer}')
