@@ -1,26 +1,71 @@
 import sys
 sys.stdin = open('input.txt')
 
+for tc in range(1, 11):
+    # 테스트 케이스의 길이
+    n = int(input())
 
-def dfs(v):
-    visited[v] = True  # 현재 정점 방문 처리
-    print(v, end=' ')
+    # 중위표기법 입력
+    arr = list(input())
 
-    for next_v in graph[v]:  # 현재 정점과 인접한 모든 정점에 대해
-        if not visited[next_v]:  # 아직 방문하지 않았다면
-            dfs(next_v)  # 인접 정점 방문하기
+    # 후위표기법 출력
+    answer = ''
 
+    # 연산자 스택
+    stack = []
 
-n, m = map(int, input().split())  # 정점, 간선 개수
-edges = list(map(int, input().split()))  # 간선 정보
-graph = [[] for _ in range(n + 1)]  # 그래프 -> n + 1인 이유는 정점 번호가 1번부터이기 때문
-visited = [False] * (n + 1)  # 방문 처리 리스트 -> n + 1인 이유는 정점 번호가 1번부터이기 때문
+    for i in arr:
+        # 연산자 및 괄호
+        if i in '+*':
 
-# 인접 그래프 만들기
-for i in range(0, len(edges), 2):
-    v1, v2 = edges[i], edges[i + 1]  # 인접한 두 정점
-    # v1, v2를 양방향으로 넣는 이유는, 화살표가 없는 무방향 그래프이기 때문
-    graph[v1].append(v2)
-    graph[v2].append(v1)
+            # *
+            if i in '*':
 
-dfs(1)  # 시작 정점을 1로 탐색 시작
+                # stack이 비거나 stack의 top 우선순위가 낮을 때까지 반복
+                while stack and stack[-1] in '*':
+                    # 스택에서 pop
+                    answer += stack.pop()
+
+                stack.append(i)
+
+            # +
+            elif i in '+':
+
+                # stack이 비거나 stack의 top이 여는 괄호일 때까지 반복
+                while stack:
+                    # 스택에서 pop
+                    answer += stack.pop()
+
+                stack.append(i)
+
+        # 피연산자
+        else:
+            answer += i
+
+    # stack에 남은 연산자를 후위표기법에 저장
+    while stack:
+        answer += stack.pop()
+
+    # stack 초기화
+    stack = []
+
+    # 후위표기법 계산기
+    for i in answer:
+        # 연산자
+        if i in '+*':
+            a = stack.pop()
+            b = stack.pop()
+
+            if i == '+':
+                c = b + a
+
+            elif i == '*':
+                c = b * a
+
+            stack.append(c)
+
+        # 피연산자
+        else:
+            stack.append(int(i))
+
+    print(f'#{tc} {stack.pop()}')
