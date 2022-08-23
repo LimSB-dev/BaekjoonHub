@@ -9,8 +9,7 @@ def dfs(x, y, words):
     words += matrix[y][x]
 
     if len(words) == 6:
-        if words not in answer:
-            answer.append(words)
+        answer.append(words)
         return
 
     for direction in range(4):
