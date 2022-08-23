@@ -42,7 +42,7 @@ for tc in range(1, int(input()) + 1):
     # 최소값
     answer = 100
 
-    # 부분합
+    # 부분집합 합
     subset = 0
 
     find_min(0)
