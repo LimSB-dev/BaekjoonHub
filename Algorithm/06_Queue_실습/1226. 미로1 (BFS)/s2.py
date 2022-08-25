@@ -16,6 +16,8 @@ def bfs(r, c):
 
     # queue가 빈 리스트가 될 때까지 반복
     while queue:
+
+        # dequeue
         r, c = queue.pop(0)
 
         for direction in range(4):
@@ -34,6 +36,7 @@ def bfs(r, c):
                 # 방문 처리
                 visited[nr][nc] = True
 
+                # enqueue
                 queue.append((nr, nc))
 
 
@@ -44,6 +47,7 @@ for _ in range(10):
 
     # 연결 확인
     answer = 0
+
     breaker = False
 
     for row in range(16):
