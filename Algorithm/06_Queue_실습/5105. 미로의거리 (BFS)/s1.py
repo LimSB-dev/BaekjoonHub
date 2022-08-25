@@ -6,7 +6,7 @@ dr = [-1, 1, 0, 0]
 dc = [0, 0, -1, 1]
 
 
-def bfs(r, c, dist, visited):
+def dfs(r, c, dist, visited):
     global answer
 
     # 방문 처리
@@ -30,7 +30,7 @@ def bfs(r, c, dist, visited):
                     answer = dist
                 return
 
-            bfs(nr, nc, dist, visited)
+            dfs(nr, nc, dist, visited)
 
             # 가지치기 당하거나 끝까지 간 경우
             visited[nr][nc] = False
@@ -56,7 +56,7 @@ for tc in range(1, int(input()) + 1):
 
             if matrix[row][col] == 2:
 
-                bfs(row, col, dist, visited)
+                dfs(row, col, dist, visited)
 
                 breaker = True
                 break

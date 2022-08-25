@@ -3,7 +3,7 @@ sys.stdin = open('input.txt')
 
 
 # now node / end node
-def bfs(nv, ev, edge):
+def dfs(nv, ev, edge):
     global answer
 
     for next_v in graph[nv]:
@@ -28,7 +28,7 @@ def bfs(nv, ev, edge):
             # 방문 처리
             visited[next_v] = True
 
-            bfs(next_v, ev, edge)
+            dfs(next_v, ev, edge)
 
             # 가지치기 혹은 노드의 끝까지 가고 돌아오는 경우
             edge -= 1
@@ -58,7 +58,7 @@ for tc in range(1, int(input()) + 1):
     start, end = map(int, input().split())
 
     # 출발 노드, 도착 노드
-    bfs(start, end, edge)
+    dfs(start, end, edge)
 
     if answer == INF:
         answer = 0

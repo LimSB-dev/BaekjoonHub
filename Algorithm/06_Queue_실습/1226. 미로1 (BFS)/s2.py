@@ -8,13 +8,18 @@ dc = [0, 0, -1, 1]
 
 def bfs(r, c):
     queue = [(r, c)]
+
+    # 방문 처리
     visited[r][c] = True
+
     while queue:
         r, c = queue.pop(0)
 
         for direction in range(4):
             nr = r + dr[direction]
             nc = c + dc[direction]
+
+            # 2차원 범위 내부 / 방문 기록 False / 벽이 아닌 경우
             if 0 <= nr < 16 and 0 <= nc < 16 and not visited[nr][nc] and matrix[nr][nc] != 1:
 
                 if matrix[nr][nc] == 3:
@@ -31,6 +36,8 @@ for _ in range(10):
     tc = int(input())
     matrix = [list(map(int, input())) for _ in range(16)]
     visited = [[False] * 16 for _ in range(16)]
+
+    # 연결 확인
     answer = 0
     breaker = False
 
