@@ -7,11 +7,14 @@ dc = [0, 0, -1, 1]
 
 
 def bfs(r, c):
+
+    # 큐 생성
     queue = [(r, c)]
 
     # 방문 처리
     visited[r][c] = True
 
+    # queue가 빈 리스트가 될 때까지 반복
     while queue:
         r, c = queue.pop(0)
 
@@ -22,11 +25,13 @@ def bfs(r, c):
             # 2차원 범위 내부 / 방문 기록 False / 벽이 아닌 경우
             if 0 <= nr < 16 and 0 <= nc < 16 and not visited[nr][nc] and matrix[nr][nc] != 1:
 
+                # 종료 조건
                 if matrix[nr][nc] == 3:
                     global answer
                     answer = 1
                     return
 
+                # 방문 처리
                 visited[nr][nc] = True
 
                 queue.append((nr, nc))
