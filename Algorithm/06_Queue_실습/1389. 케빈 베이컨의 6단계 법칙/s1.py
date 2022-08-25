@@ -3,26 +3,25 @@ sys.stdin = open('input.txt')
 
 
 # 시작 노드 / 깊이
-def bfs(sv):
-    global length , length
+def bfs(sv, depth):
+    global total
 
-    queue = [sv]
+    queue = [(sv, depth)]
 
     visited[sv] = True
 
     while queue:
-        nr = queue.pop(0)
+        nr, depth = queue.pop(0)
 
         for next_v in graph[nr]:
 
-            next_v -= 1
+            if not visited[next_v]:
 
-            length += 1
+                visited[next_v] = True
 
-            visited[next_v] = True
+                queue.append((next_v, depth + 1))
 
-            queue.append(next_v)
-    return
+            total += depth
 
 
 INF = 999999999
@@ -30,10 +29,9 @@ INF = 999999999
 # 노드의 수 / 간선의 수
 v, e = map(int, input().split())
 graph = [[] for _ in range(v)]
-visited = [False] * (v)
 
-# 케빈 베이컨의 수 최댓값
-answer = 0
+# 케빈 베이컨의 수 리스트
+answer = []
 
 # 인접 그래프
 for _ in range(e):
@@ -46,11 +44,15 @@ for _ in range(e):
     graph[v1].append(v2)
     graph[v2].append(v1)
 
+
 for i in range(v):
-    length = 0
+    visited = [False] * v
+    total = 0
 
-    bfs(i)
+    bfs(i, 0)
 
-    answer.append(length)
+    answer.append(total)
 
-print(answer.index(max(answer)) + 1)
+print(answer)
+
+print(answer.index(min(answer)) + 1)

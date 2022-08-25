@@ -1,71 +1,61 @@
 import sys
 sys.stdin = open('input.txt')
 
-for tc in range(1, 11):
-    # 테스트 케이스의 길이
+# 1시 , 2시, 4시, 5시, 7시, 8시, 10시, 11시
+dr = [-2, -1, 1, 2, 2, 1, -1, -2]
+dc = [1, 2, 2, 1, -1, -2, -2, -1]
+
+
+def bfs(r, c, depth):
+    global answer
+
+    # 큐 생성
+    queue = [(r, c, depth)]
+
+    # 방문처리
+    visited[r][c] = True
+
+    while queue:
+
+        r, c, depth = queue.pop(0)
+
+        for direction in range(8):
+            nr = r + dr[direction]
+            nc = c + dc[direction]
+
+            if 0 <= nr < n and 0 <= nc < n and not visited[nr][nc]:
+
+                # 방문 처리
+                visited[nr][nc] = True
+
+                # 가지치기
+                if answer <= depth:
+                    return
+
+                # 종료조건
+                if nr == er and nc == ec:
+                    if answer > depth:
+                        answer = depth
+                    return
+
+                queue.append((nr, nc, depth + 1))
+
+
+INF = 999999999
+
+for tc in range(1, int(input()) + 1):
     n = int(input())
+    visited = [[False] * n for _ in range(n)]
 
-    # 중위표기법 입력
-    arr = list(input())
+    # 최소 이동
+    answer = INF
 
-    # 후위표기법 출력
-    answer = ''
+    sr, sc = map(int, input().split())
+    er, ec = map(int, input().split())
 
-    # 연산자 스택
-    stack = []
+    bfs(sr, sc, 1)
 
-    for i in arr:
-        # 연산자 및 괄호
-        if i in '+*':
+    if answer == INF:
+        answer = 0
 
-            # *
-            if i in '*':
-
-                # stack이 비거나 stack의 top 우선순위가 낮을 때까지 반복
-                while stack and stack[-1] in '*':
-                    # 스택에서 pop
-                    answer += stack.pop()
-
-                stack.append(i)
-
-            # +
-            elif i in '+':
-
-                # stack이 비거나 stack의 top이 여는 괄호일 때까지 반복
-                while stack:
-                    # 스택에서 pop
-                    answer += stack.pop()
-
-                stack.append(i)
-
-        # 피연산자
-        else:
-            answer += i
-
-    # stack에 남은 연산자를 후위표기법에 저장
-    while stack:
-        answer += stack.pop()
-
-    # stack 초기화
-    stack = []
-
-    # 후위표기법 계산기
-    for i in answer:
-        # 연산자
-        if i in '+*':
-            a = stack.pop()
-            b = stack.pop()
-
-            if i == '+':
-                c = b + a
-
-            elif i == '*':
-                c = b * a
-
-            stack.append(c)
-
-        # 피연산자
-        else:
-            stack.append(int(i))
-
-    print(f'#{tc} {stack.pop()}')
+    print(answer)
