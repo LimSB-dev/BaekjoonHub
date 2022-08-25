@@ -8,36 +8,23 @@ dc = [0, 0, -1, 1]
 def dfs(r, c, cnt, visited):
     global answer
 
-    if visited == [True] * monster_cnt:
-        if answer > cnt:
-            answer = cnt
-        return
 
-    for i in range(monster_cnt):
+    for direction in range(4):
+        nr = r + dr[direction]
+        nc = c + dc[direction]
+        if 0 <= nr < n and 0 <= nc < n and not visited[nr][nc]:
 
-        # 방문 기록이 없는 경우
-        if not visited[i]:
-            visited[i] = True
-            mr, mc = monster[i][0], monster[i][1]    # 몬스터 좌표
-            cr, cc = client[i][0], client[i][1]    # 고객 좌표
+            # 방문 처리
+            visited[nr][nc] = True
 
-            # 사냥꾼 위치에서 몬스터한테 가는 거리
-            cnt += abs(r - mr) + abs(c - mc)
-
-            # 몬스터 위치에서 고개한테 가는 거리
-            cnt += abs(mr - cr) + abs(mc - cc)
-
-            # 가지치기
-            if answer <= cnt:
+            # 모든 몬스터를 잡고 고객을 방문했을 경우
+            if visited == [True] * monster_cnt:
+                if answer > cnt:
+                    answer = cnt
                 return
 
-            # 사냥꾼의 위치 갱신
-            dfs(cr, cc, cnt, visited)
 
-            # 가지치기 되거나 재귀함수 끝에서 돌아온 경우
-            visited[i] = False
-            cnt -= abs(r - mr) + abs(c - mc)
-            cnt -= abs(mr - cr) + abs(mc - cc)
+
 
 
 INF = 999999999
@@ -45,6 +32,7 @@ INF = 999999999
 for tc in range(1, int(input()) + 1):
     n = int(input())    # 맵의 크기
     field = [list(map(int, input().split())) for _ in range(n)]
+    visited = [[False] * n for _ in range(n)]
 
     monster = []
     client = []
@@ -65,15 +53,18 @@ for tc in range(1, int(input()) + 1):
             elif value < 0:
                 client.append([row, col, value])
 
+            # 최대 몬스터 수
             if monster_cnt == 4:
                 break
 
         if monster_cnt == 4:
             break
 
-    visited = [False] * monster_cnt
+    # 몬스터 방문 정보
+    visit_client = [False] * monster_cnt
 
-    # 몬스터의 좌표 / 고객의 좌표, 오름차순 / 내림차순 정렬
+    # 몬스터의 좌표 / 오름차순
+    # 고객의 좌표 / 내림차순 정렬
     monster = sorted(monster, key=lambda x: x[2])
     client = sorted(client, key=lambda x: x[2], reverse=True)
 
@@ -81,6 +72,7 @@ for tc in range(1, int(input()) + 1):
 
     # 사냥꾼의 시작 위치: 1, 1
     # 현재 거리: 0
+    # 방문 정보
     dfs(0, 0, 0, visited)
 
     print(f'#{tc} {answer}')
