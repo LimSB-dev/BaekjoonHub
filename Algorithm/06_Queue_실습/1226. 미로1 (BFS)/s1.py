@@ -23,6 +23,7 @@ def bfs(r, c, visited):
 
             bfs(nr, nc, visited)
 
+
 for _ in range(10):
     tc = int(input())
     matrix = [list(map(int, input())) for _ in range(16)]
