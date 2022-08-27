@@ -1,71 +1,72 @@
 import sys
 sys.stdin = open('input.txt')
 
-for tc in range(1, 11):
-    # 테스트 케이스의 길이
-    n = int(input())
+from collections import deque
 
-    # 중위표기법 입력
-    arr = list(input())
+# 상 하 좌 우 위 아래
+dr = [-1, 1, 0, 0, 0, 0]
+dc = [0, 0, -1, 1, 0, 0]
+dd = [0, 0, 0, 0, -1, 1]
 
-    # 후위표기법 출력
-    answer = ''
 
-    # 연산자 스택
-    stack = []
+def bfs(box, tomato):
 
-    for i in arr:
-        # 연산자 및 괄호
-        if i in '+*':
+    # 현재 일
+    day = 0
 
-            # *
-            if i in '*':
+    # 모든 박스 익히기
+    while tomato:
+        d, r, c = tomato.popleft()
 
-                # stack이 비거나 stack의 top 우선순위가 낮을 때까지 반복
-                while stack and stack[-1] in '*':
-                    # 스택에서 pop
-                    answer += stack.pop()
+        # 현재 토마토 날짜
+        day = box[d][r][c]
 
-                stack.append(i)
+        # 네 방향으로 토마토 익히기
+        for direction in range(6):
+            nd = d + dd[direction]
+            nr = r + dr[direction]
+            nc = c + dc[direction]
 
-            # +
-            elif i in '+':
+            # box 범위 내부 / 안 익은 토마토
+            if 0 <= nd < z and 0 <= nr < h and 0 <= nc < w and box[nd][nr][nc] == 0:
 
-                # stack이 비거나 stack의 top이 여는 괄호일 때까지 반복
-                while stack:
-                    # 스택에서 pop
-                    answer += stack.pop()
+                # 토마토 익힌 날짜 적기
+                box[nd][nr][nc] = day + 1
 
-                stack.append(i)
+                tomato.append([nd, nr, nc])
+    return day - 1
 
-        # 피연산자
-        else:
-            answer += i
 
-    # stack에 남은 연산자를 후위표기법에 저장
-    while stack:
-        answer += stack.pop()
+w, h, z = map(int, input().split())
+box = [[list(map(int, input().split())) for _ in range(h)] for _ in range(z)]
 
-    # stack 초기화
-    stack = []
+# 익은 토마토 좌표
+tomato = deque()
 
-    # 후위표기법 계산기
-    for i in answer:
-        # 연산자
-        if i in '+*':
-            a = stack.pop()
-            b = stack.pop()
+for dep in range(z):
+    for row in range(h):
+        for col in range(w):
 
-            if i == '+':
-                c = b + a
+            # enqueue
+            if box[dep][row][col] == 1:
+                tomato.append([dep, row, col])
 
-            elif i == '*':
-                c = b * a
+# 모든 익은 토마토 좌표에서 동시에 bfs 진행
+answer = bfs(box, tomato)
 
-            stack.append(c)
+for dep in range(z):
+    for row in range(h):
+        for col in range(w):
 
-        # 피연산자
-        else:
-            stack.append(int(i))
+            # 안 익은 토마토가 있다면
+            if box[dep][row][col] == 0:
+                answer = -1
 
-    print(f'#{tc} {stack.pop()}')
+            if answer == -1:
+                break
+        if answer == -1:
+            break
+    if answer == -1:
+        break
+
+print(answer)
