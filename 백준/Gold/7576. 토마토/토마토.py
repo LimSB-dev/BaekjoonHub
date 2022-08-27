@@ -31,11 +31,8 @@ def bfs(box, tomato):
     return day - 1
 
 
-INF = 999999999
-
 w, h = map(int, input().split())
 box = [list(map(int, input().split())) for _ in range(h)]
-visited = [[False] * w for _ in range(h)]
 
 # 익은 토마토 좌표
 tomato = deque()
@@ -45,12 +42,7 @@ for row in range(h):
 
         # 방문 처리 및 enqueue
         if box[row][col] == 1:
-            visited[row][col] = True
             tomato.append([row, col])
-
-        # 토마토가 없는 칸은 방문 처리
-        if box[row][col] == -1:
-            visited[row][col] = True
 
 # 모든 익은 토마토 좌표에서 동시에 bfs 진행
 answer = bfs(box, tomato)
