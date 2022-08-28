@@ -1,71 +1,64 @@
 import sys
 sys.stdin = open('input.txt')
+# 원형 큐
+from collections import deque
 
-for tc in range(1, 11):
-    # 테스트 케이스의 길이
-    n = int(input())
 
-    # 중위표기법 입력
-    arr = list(input())
+# 큐 / 방문 리스트
+def bfs(queue, robot):
+    global answer
 
-    # 후위표기법 출력
-    answer = ''
+    zero = 0
 
-    # 연산자 스택
-    stack = []
+    while queue:
+        idx, number = queue.popleft()
 
-    for i in arr:
-        # 연산자 및 괄호
-        if i in '+*':
+        
+            # 한 칸 전진
+            if not robot[i + 1] and queue[i + 1][1] > 1:
 
-            # *
-            if i in '*':
+                # 방문 처리
+                robot[i + 1] = True
+                robot[i] = False
 
-                # stack이 비거나 stack의 top 우선순위가 낮을 때까지 반복
-                while stack and stack[-1] in '*':
-                    # 스택에서 pop
-                    answer += stack.pop()
+                # 내구성 하락
+                queue[i + 1][1] -= 1
 
-                stack.append(i)
+                # 0이 된 순간
+                if queue[i + 1][1] == 0:
+                    zero += 1
 
-            # +
-            elif i in '+':
+                # 내구도가 0인 칸의 개수가 k개 이상이면 과정 종료
+                if zero >= k:
+                    return
 
-                # stack이 비거나 stack의 top이 여는 괄호일 때까지 반복
-                while stack:
-                    # 스택에서 pop
-                    answer += stack.pop()
+        # 3단계
+        # 0이 아닌 경우 로봇 올려두기
+        if number != 0:
+            number -= 1
+            robot[idx] = True
 
-                stack.append(i)
+        # 4단계
+        # 내구도가 0인 칸의 개수가 k개 이상이면 과정 종료
+        if zero >= k:
+            return
 
-        # 피연산자
-        else:
-            answer += i
+        queue.append([idx, number])
 
-    # stack에 남은 연산자를 후위표기법에 저장
-    while stack:
-        answer += stack.pop()
+        answer += 1
 
-    # stack 초기화
-    stack = []
 
-    # 후위표기법 계산기
-    for i in answer:
-        # 연산자
-        if i in '+*':
-            a = stack.pop()
-            b = stack.pop()
+n, k = map(int, input().split())
+arr = list(map(int, input().split()))
+visited = [False] * (2 * n)
 
-            if i == '+':
-                c = b + a
+# 가장 처음 수행되는 단계는 1번째 단계
+answer = 1
 
-            elif i == '*':
-                c = b * a
+belt = deque()
+for idx, value in enumerate(arr):
+    belt.append([idx, value])
 
-            stack.append(c)
+bfs(belt, visited)
 
-        # 피연산자
-        else:
-            stack.append(int(i))
-
-    print(f'#{tc} {stack.pop()}')
+print(answer)
