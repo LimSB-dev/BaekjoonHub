@@ -1,31 +1,49 @@
 import sys
-from collections import deque
-sys.stdin = open('input.txt')
+sys.stdin = open('input.txt', encoding='utf-8')
+
+operators = ['+', '-', '*', '/']
 
 
-# 전위순회
-def preorder(node):
-    if node:
-        print(node, end=' ')
-        preorder(ch1[node])
-        preorder(ch2[node])
+def cal_num(node):
+    if node != 0:
+        if tree[node] in operators:
+            a = cal_num(ch1[node])
+            b = cal_num(ch2[node])
+            if tree[node] == '+':
+                result = a + b
+            elif tree[node] == '-':
+                result = a - b
+            elif tree[node] == '*':
+                result = a * b
+            elif tree[node] == '/':
+                result = a / b
+            return result
+        else:
+            return int(tree[node])
 
 
-n = int(input())
-arr = deque(map(int, input().split()))
+for tc in range(1, 11):
+    n = int(input())
+    tree = [''] * (n + 1)
+    answer = 0
 
-# 이진 트리의 저장
+    ch1 = [0] * (n + 1)
+    ch2 = [0] * (n + 1)
 
-# 1. 부모 번호를 인덱스로 자식 번호를 저장
-ch1 = [0] * (n + 1)
-ch2 = [0] * (n + 1)
+    # tree 채우기
+    for i in range(1, n + 1):
+        arr = list(map(str, input().split()))
 
-while arr:
-    v1, v2 = arr.popleft(), arr.popleft()
+        # Leaf Node
+        if len(arr) == 2:
+            tree[i] = arr[1]
+            ch1[int(arr[0])] = 0
+            ch2[int(arr[0])] = 0
+        else:
+            tree[i] = arr[1]
+            ch1[int(arr[0])] = int(arr[2])
+            ch2[int(arr[0])] = int(arr[3])
 
-    if ch1[v1] == 0:
-        ch1[v1] = v2
-    else:
-        ch2[v1] = v2
+    answer = cal_num(1)
 
-preorder(1)
+    print(f'#{tc} {int(answer)}')
