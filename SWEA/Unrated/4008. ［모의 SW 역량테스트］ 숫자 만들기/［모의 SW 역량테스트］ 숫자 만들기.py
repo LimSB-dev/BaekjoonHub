@@ -49,7 +49,7 @@ for tc in range(1, int(input()) + 1):
     n = int(input())                                # 카드의 개수
     operators = list(map(int, input().split()))     # 연산자의 종류별 수
     numbers = deque(map(int, input().split()))      # 카드 리스트
-    stack = []                                      # stack (현재까지 계산된 값을 담을 리스트)
+    stack = []                                      # 현재까지 계산된 값을 담을 stack
 
     min_value = INF                                 # 최솟값을 담을 변수
     max_value = INF * -1                            # 최댓값을 담을 변수
