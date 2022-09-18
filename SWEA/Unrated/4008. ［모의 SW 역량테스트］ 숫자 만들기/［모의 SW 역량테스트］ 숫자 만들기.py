@@ -1,6 +1,3 @@
-import sys
-sys.stdin = open('input.txt')
-
 from collections import deque
 from copy import deepcopy
 
@@ -33,17 +30,17 @@ def cal_result(numbers, operators, stack):
             elif i == 2:
                 result = stack_num * deque_num
             elif i == 3:
-                result = stack_num / deque_num
+                result = int(stack_num / deque_num)
 
-            stack.append(int(result))               # 소수점을 제외 시키고 stack에 append
+            stack.append(result)                    # 소수점을 제외 시키고 stack에 append
 
             cal_result(num_copy, operators, stack)  # 재귀
 
             operators[i] += 1                       # 재귀의 끝까지 도달한 경우
 
 
-# 임의의 최대값
-INF = 999999999
+# 최댓값
+INF = 1000000000
 
 for tc in range(1, int(input()) + 1):
     n = int(input())                                # 카드의 개수
