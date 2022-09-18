@@ -41,6 +41,7 @@ def cal_result(numbers, operators, stack):
 
             operators[i] += 1                       # 재귀의 끝까지 도달한 경우
 
+
 # 임의의 최대값
 INF = 999999999
 
