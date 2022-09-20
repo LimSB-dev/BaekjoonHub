@@ -1,34 +1,36 @@
 import sys
-sys.stdin = open('input.txt')
-
-table = {
-    '001101': 0,
-    '010011': 1,
-    '111011': 2,
-    '110001': 3,
-    '100011': 4,
-    '110111': 5,
-    '001011': 6,
-    '111101': 7,
-    '011001': 8,
-    '101111': 9,
-}
+sys.stdin = open('input.txt', encoding='utf-8')
 
 for tc in range(1, int(input()) + 1):
-    num = input()
-    words = ''
-    answer = []
+    bins = list(map(int, input()))
+    tris = list(map(int, input()))
+    answer = 0
 
-    for n in num:
-        two = format(int(n, 16), 'b')
-        two = ('0' * (4 - len(two))) + two
-        words += two
+    for i, bi in enumerate(bins):
+        tmp_b = bins[i]
+        bins[i] = (bi + 1) % 2
 
-    words = words.strip('0')
+        for j, tri in enumerate(tris):
+            for k in range(1, 3):
+                b = 0
+                t = 0
+                tmp_t = tris[j]
+                tris[j] = (tri + k) % 3
 
-    words = ('0' * (6 - (len(words) % 6))) + words
+                for index, value in enumerate(bins[::-1]):
+                    b += value * (2 ** index)
+                for index, value in enumerate(tris[::-1]):
+                    t += value * (3 ** index)
 
-    for i in range(0, len(words), 6):
-        answer.append(table[words[i:i + 6]])
+                if b == t:
+                    answer = b
+                    break
 
-    print(*answer)
+                tris[j] = tmp_t
+            if answer != 0:
+                break
+        bins[i] = tmp_b
+        if answer != 0:
+            break
+
+    print(f'#{tc} {answer}')
