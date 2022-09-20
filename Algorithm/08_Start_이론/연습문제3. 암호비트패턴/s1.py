@@ -15,18 +15,20 @@ table = {
 }
 
 for tc in range(1, int(input()) + 1):
-    n = input()                             # 16진수 입력
-    words = ''                              # 빈 문자열 생성
+    num = input()
+    words = ''
+    answer = []
 
-    for num in n:                           # 16진수 하나씩 받기
-        two = format(int(num, 16), 'b')     # 16진수 -> 2진수 변환
-        two = ('0' * (4 - len(two))) + two  # 16진수 하나당 4비트 만들기
-        words += two                        # 2진수들 하나의 문자열로 붙이기
+    for n in num:
+        two = format(int(n, 16), 'b')
+        two = ('0' * (4 - len(two))) + two
+        words += two
 
-    words = words.strip('0')                # 앞뒤에 있는 0들 지우기
+    words = words.strip('0')
 
     words = ('0' * (6 - (len(words) % 6))) + words
 
     for i in range(0, len(words), 6):
-        print(table[words[i:i + 6]], end=' ')
-    print()
+        answer.append(table[words[i:i + 6]])
+
+    print(*answer)
