@@ -11,9 +11,9 @@ for tc in range(1, int(input()) + 1):
             r_value = 999999999
             c_value = 999999999
             if row != 0:
-                c_value = matrix[row - 1][col]
+                r_value = matrix[row - 1][col]
             if col != 0:
-                r_value = matrix[row][col - 1]
+                c_value = matrix[row][col - 1]
 
             value = min(r_value, c_value)
 
