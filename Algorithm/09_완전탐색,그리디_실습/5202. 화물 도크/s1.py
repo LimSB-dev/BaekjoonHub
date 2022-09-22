@@ -2,10 +2,10 @@ import sys
 sys.stdin = open('input.txt', encoding='utf-8')
 
 
-def find_max(times, start, end, value):
+def find_max(arr, start, end, value):
     global answer
 
-    times_copy = times.copy()
+    times_copy = arr.copy()
 
     # 가지치기
     if len(times_copy) + value <= answer:
