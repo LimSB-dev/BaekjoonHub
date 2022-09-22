@@ -21,11 +21,8 @@ def find_max(containers, trucks, weight):
         truck = trucks_copy[-1]
 
         if truck >= container:
-            # 옮길 수 있지만 그리디가 아니기 때문에 무시하기
-            find_max(containers_copy, trucks_copy, weight)
             trucks_copy.pop()
             weight += container
-            # 옮기기
             find_max(containers_copy, trucks_copy, weight)
         else:
             find_max(containers_copy, trucks_copy, weight)
