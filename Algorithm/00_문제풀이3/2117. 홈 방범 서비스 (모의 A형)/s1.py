@@ -1,34 +1,35 @@
 import sys
-sys.stdin = open('input.txt')
-
-table = {
-    '001101': 0,
-    '010011': 1,
-    '111011': 2,
-    '110001': 3,
-    '100011': 4,
-    '110111': 5,
-    '001011': 6,
-    '111101': 7,
-    '011001': 8,
-    '101111': 9,
-}
+sys.stdin = open('input.txt', encoding='utf-8')
 
 for tc in range(1, int(input()) + 1):
-    num = input()
-    words = ''
-    answer = []
+    n, m = map(int, input().split())
+    matrix = [list(map(int, input().split())) for _ in range(n)]
+    people = 0
+    answer = 0
 
-    for n in num:
-        two = format(int(n, 16), 'b')
-        two = ('0' * (4 - len(two))) + two
-        words += two
+    for row in matrix:
+        people += sum(row)
 
-    words = words.strip('0')
+    max_cost = people * m
 
-    words = ('0' * (6 - (len(words) % 6))) + words
+    k = 0
+    while True:
+        k += 1
+        cost = k * k + (k - 1) * (k - 1)
 
-    for i in range(0, len(words), 6):
-        answer.append(table[words[i:i + 6]])
+        if max_cost < cost:
+            break
 
-    print(*answer)
+        for row in range(n):
+            for col in range(n):
+                secure = 0
+                for r in range(n):
+                    for c in range(n):
+                        if k > abs(r - row) + abs(c - col):
+                            secure += matrix[r][c]
+
+                if cost <= secure * m:
+                    if answer < secure:
+                        answer = secure
+
+    print(f'#{tc} {answer}')
