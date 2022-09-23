@@ -25,6 +25,13 @@ def dfs(place):
                                 visited[nx2][ny2] = True
                                 if place[nx2][ny2] == 'P':
                                     answer = 0
+                                    break
+                            if answer == 0:
+                                break
+                        if answer == 0:
+                            break
+            if answer == 0:
+                break
     return answer
 
 def solution(places):
