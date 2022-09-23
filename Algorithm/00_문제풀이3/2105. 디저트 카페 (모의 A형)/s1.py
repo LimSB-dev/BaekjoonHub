@@ -6,32 +6,52 @@ dr = [1, 1, -1, -1]
 dc = [1, -1, -1, 1]
 
 
-def dfs(desserts, r, c):
+def dfs(r, c, desserts, visited, directions):
     global answer
 
-    desserts.add(matrix[r][c])                                          # 새로운 디저트 추가
+    # 4방향 탐색
+    for direction in range(4):
 
-    for direction in range(4):                                          # 4방향 탐색
-
+        # 디저트 set 깊은 복사
         desserts_copy = desserts.copy()
 
-        while True:
+        # 방문 처리 깊은 복사
+        visited_copy = visited.copy()
 
+        # 방향 set 깊은 복사
+        directions_copy = directions.copy()
 
-        nr = r + dr[direction]
-        nc = c + dc[direction]
+        # 동일한 방향 가지 않기
+        if direction not in directions_copy:
 
-        if 0 <= nr < n and 0 <= nc < n and not visited[nr][nc]:         # 배열 내부 / 방문 False
+            # 현재 탐색 방향 저장
+            directions_copy.add(direction)
 
-            if matrix[nr][nc] not in desserts_copy:                     # 먹은적 없는 dessert
-                visited[nr][nc] = True                                  # 방문 처리
-                dfs(desserts_copy, nr, nc)                   # 재귀
+            # 탐색 방향으로 위치 변경
+            nr = r + dr[direction]
+            nc = c + dc[direction]
 
-            elif nr == row and nc == col and len(desserts_copy) >= 4:   # 처음 위치 복귀
-                if answer < len(desserts_copy):
-                    print(row, col, desserts_copy)
-                    answer = len(desserts_copy)
+            # 진행 불가능할 때까지 한 방향 반복 탐색
+            while 0 <= nr < n and 0 <= nc < n and matrix[nr][nc] not in desserts_copy and (nr, nc) not in visited:
+
+                # 방문 처리
+                visited_copy.add((nr, nc))
+
+                # 디저트 종류 추가
+                desserts_copy.add(matrix[nr][nc])
+
+                # 재귀
+                dfs(nr, nc, desserts_copy, visited_copy, directions_copy)
+
+                # 종료 조건
+                if nr == row and nc == col and len(desserts_copy) >= 4:
+                    if answer < len(desserts_copy):
+                        answer = len(desserts_copy)
                     return
+
+                # 계속 진행 방향 탐색
+                nr += dr[direction]
+                nc += dc[direction]
 
 
 for tc in range(1, int(input()) + 1):
@@ -41,8 +61,9 @@ for tc in range(1, int(input()) + 1):
 
     for row in range(n):
         for col in range(n):
-            visited = [[False] * n for _ in range(n)]
             desserts_set = set()
-            dfs(desserts_set, row, col)
+            visit = set()
+            direction_set = set()
+            dfs(row, col, desserts_set, visit, direction_set)
 
     print(f'#{tc} {answer}')
