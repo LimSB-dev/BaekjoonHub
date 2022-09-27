@@ -1,40 +1,33 @@
 import sys
-sys.stdin = open('input.txt')
-
-# 아래, 오른쪽
-dr = [1, 0]
-dc = [0, 1]
+sys.stdin = open('input.txt', encoding='utf-8')
 
 
 def dfs(row, col, value):
     global answer
-    value += matrix[row][col]
 
     # 가지치기
-    if answer <= value:
+    if value <= answer:
         return
 
-    # 종료조건
-    if row == n - 1 and col == n - 1:
-        if answer > value:
-            answer = value
+    # 종료 조건
+    if row == n:
+        answer = value
+        return
 
-    # 탐색
-    for directions in range(2):
-        nr = row + dr[directions]
-        nc = col + dc[directions]
+    # 열 탐색
+    for i in range(n):
+        col_copy = col.copy()
 
-        # 배열 내부
-        if nr < n and nc < n:
-            dfs(nr, nc, value)
+        if i not in col_copy:
+            col_copy.append(i)
+            dfs(row + 1, col_copy, value * (matrix[row][i] / 100))
 
 
-INF = 999999999
 for tc in range(1, int(input()) + 1):
     n = int(input())
     matrix = [list(map(int, input().split())) for _ in range(n)]
-    answer = INF
+    answer = 0
 
-    dfs(0, 0, 0)
+    dfs(0, [], 1)
 
-    print(f'#{tc} {answer}')
+    print(f'#{tc} {format(round(answer * 100, 6),".6f")}')
