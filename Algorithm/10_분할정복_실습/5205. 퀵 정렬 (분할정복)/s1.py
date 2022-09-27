@@ -1,40 +1,38 @@
 import sys
-sys.stdin = open('input.txt')
-
-# 아래, 오른쪽
-dr = [1, 0]
-dc = [0, 1]
+sys.stdin = open('input.txt', encoding='utf-8')
 
 
-def dfs(row, col, value):
-    global answer
-    value += matrix[row][col]
+def partition(arr, left, right):
+    pivot = arr[left]
+    i, j = left, right
 
-    # 가지치기
-    if answer <= value:
-        return
+    while i <= j:
 
-    # 종료조건
-    if row == n - 1 and col == n - 1:
-        if answer > value:
-            answer = value
+        while i <= j and arr[i] <= pivot:
+            i += 1
 
-    # 탐색
-    for directions in range(2):
-        nr = row + dr[directions]
-        nc = col + dc[directions]
+        while i <= j and arr[j] >= pivot:
+            j -= 1
 
-        # 배열 내부
-        if nr < n and nc < n:
-            dfs(nr, nc, value)
+        if i < j:
+            arr[i], arr[j] = arr[j], arr[i]
+
+    arr[left], arr[j] = arr[j], arr[left]
+
+    return j
 
 
-INF = 999999999
+def quick_sort(arr, left, right):
+    if left < right:
+        mid = partition(arr, left, right)
+        quick_sort(arr, left, mid - 1)
+        quick_sort(arr, mid + 1, right)
+
+
 for tc in range(1, int(input()) + 1):
     n = int(input())
-    matrix = [list(map(int, input().split())) for _ in range(n)]
-    answer = INF
+    numbers = list(map(int, input().split()))
 
-    dfs(0, 0, 0)
+    quick_sort(numbers, 0, n - 1)
 
-    print(f'#{tc} {answer}')
+    print(f'#{tc} {numbers[n // 2]}')
