@@ -1,31 +1,48 @@
-from itertools import permutations
 import sys
-sys.stdin = open('input.txt')
+sys.stdin = open('input.txt', encoding='utf-8')
+
+from collections import deque
+
+# 상 하 좌 우
+dr = [-1, 1, 0, 0]
+dc = [0, 0, -1, 1]
 
 
-def baby_gin(array):
-    array = list(array)
-    array.sort()
-    A, B, C = array
-    if (A == B and B == C) or (A + 1 == B and B + 1 == C):
-        return True
-    return False
+def bfs(row, col, visited, dp):
+
+    # 방문 처리
+    visited[row][col] = True
+
+    # queue 생성
+    queue = deque([[row, col]])
+
+    while queue:
+
+        # dequeue
+        row, col = queue.popleft()
+
+        for direction in range(4):
+            nr = row + dr[direction]
+            nc = col + dc[direction]
+
+            if 0 <= nr < n and 0 <= nc < n:
+                time = dp[row][col] + matrix[nr][nc]
+
+                if not visited[nr][nc]:
+                    visited[nr][nc] = True
+                    dp[nr][nc] = time
+                    queue.append([nr, nc])
+                elif dp[nr][nc] > time:
+                    dp[nr][nc] = time
+                    queue.append([nr, nc])
 
 
 for tc in range(1, int(input()) + 1):
-    numbers = list(map(int, input().strip()))
-    answer = False
-    for arr in permutations(numbers, 3):
-        if baby_gin(arr):
-            arr = list(arr)
-            difference = numbers.copy()
+    n = int(input())
+    matrix = [list(map(int, input())) for _ in range(n)]
+    dp = [[0] * n for _ in range(n)]
+    visited = [[False] * n for _ in range(n)]
 
-            for i in arr:
-                if i in difference:
-                    difference.remove(i)
+    bfs(0, 0, visited, dp)
 
-            if baby_gin(difference):
-                answer = True
-                break
-
-    print(f'#{tc} {answer}')
+    print(f'#{tc} {dp[n - 1][n - 1]}')
