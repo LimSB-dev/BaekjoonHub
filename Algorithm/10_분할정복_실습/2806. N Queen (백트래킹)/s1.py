@@ -1,22 +1,34 @@
-# 재귀를 이용한 선택정렬
+import sys
+sys.stdin = open('input.txt', encoding='utf-8')
 
-def selection_sort(i):
+
+def dfs(visited, row, post):
+    global answer
 
     # 종료 조건
-    if i == len(numbers) - 1:
+    if row == n:
+        answer += 1
         return
 
-    min_index = i  # min_index를 정렬되지 않는 부분 중 맨 앞 인덱스로 초기화
+    # 열 탐색
+    for col in range(n):
 
-    # '맨 앞 인덱스 + 1'부터 비교하여 최소값 인덱스 찾기
-    for j in range(i + 1, len(numbers)):
-        if numbers[j] < numbers[min_index]:
-            min_index = j
+        # 행, 열 확인
+        if not visited[col] and abs(post - col) != 1:
 
-    numbers[i], numbers[min_index] = numbers[min_index], numbers[i]  # 맨 앞의 값과 최소값을 교환
-    selection_sort(i + 1)  # 재귀 호출
+            visited[col] = True
+
+            dfs(visited, row + 1, col)
+
+            # 가지치기 / 종료조건 이후
+            visited[col] = False
 
 
-numbers = [5, 2, 7, 1, 3, 8, 9, 3, 5, 2]
-selection_sort(0)  # 0번째 원소부터 정렬 시작
-print(numbers)
+for tc in range(1, int(input()) + 1):
+    n = int(input())
+    visited = [False] * n
+    answer = 0
+
+    dfs(visited, 0, 999999999)
+
+    print(f'#{tc} {answer}')
