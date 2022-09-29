@@ -2,35 +2,32 @@ import sys
 sys.stdin = open('input.txt', encoding='utf-8')
 
 
-def partition(arr, left, right):
-    pivot = arr[right]
-    i, j = left - 1, left
-
-    while j < right:
-
-        if pivot > arr[j]:
-            i += 1
-
-            if i < j:
-                arr[i], arr[j] = arr[j], arr[i]
-
-        j += 1
-
-    arr[i + 1], arr[right] = arr[right], arr[i + 1]
-
-    return i + 1
+def find_set(node):
+    if node != parent[node]:
+        parent[node] = find_set(parent[node])
+    return parent[node]
 
 
-def quick_sort(arr, left, right):
-
-    if left < right:
-        middle = partition(arr, left, right)
-        quick_sort(arr, left, middle - 1)
-        quick_sort(arr, middle + 1, right)
+def union(x, y):
+    x_root, y_root = find_set(x), find_set(y)
+    if x_root < y_root:
+        parent[y_root] = x_root
+    else:
+        parent[x_root] = y_root
 
 
 for tc in range(1, int(input()) + 1):
+    n, m = map(int, input().split())
     numbers = list(map(int, input().split()))
-    quick_sort(numbers, 0, len(numbers) - 1)
+    parent = list(range(n + 1))
 
-    print(f'#{tc} {numbers}')
+    for i in range(0, m * 2, 2):
+        v1, v2 = numbers[i], numbers[i + 1]
+        union(v1, v2)
+
+    answer = set()
+
+    for i in range(1, n + 1):
+        answer.add(find_set(i))
+
+    print(f'#{tc} {len(answer)}')
