@@ -3,21 +3,27 @@ sys.stdin = open('input.txt', encoding='utf-8')
 
 
 def find_set(node):
-    while node != parents[node]:
-        node = parents[node]
-    return node
+    if node != parents[node]:
+        parents[node] = find_set(parents[node])
+    return parents[node]
 
 
 n = int(input())
 m = int(input())
 parents = list(range(n + 1))
-graph = [list(map(int, input().split())) for _ in range(n)]
 answer = 'YES'
 
 for row in range(n):
+    arr = list(map(int, input().split()))
     for col in range(n):
-        if graph[row][col] == 1:
-            parents[col + 1] = parents[row + 1]
+        if arr[col] == 1:
+            v1_root, v2_root = find_set(row + 1), find_set(col + 1)
+
+            if v1_root != v2_root:
+                if v1_root < v2_root:
+                    parents[v2_root] = v1_root
+                else:
+                    parents[v1_root] = v2_root
 
 numbers = list(map(int, input().split()))
 
