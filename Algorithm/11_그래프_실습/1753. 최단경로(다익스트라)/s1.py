@@ -1,47 +1,44 @@
 import sys
 sys.stdin = open('input.txt', encoding='utf-8')
+from heapq import heappush, heappop
 
 
-def merge(left, right):
-    global cnt
+def dijkstra(start):
+    distance[start] = 0
+    heap = [(0, start)]
 
-    if left[-1] > right[-1]:
-        cnt += 1
+    while heap:
+        min_dist, min_node = heappop(heap)
 
-    merged_arr = []
-    i, j = 0, 0
+        if min_dist <= distance[min_node]:
 
-    while i < len(left) and j < len(right):
-        if left[i] < right[j]:
-            merged_arr.append(left[i])
-            i += 1
-        else:
-            merged_arr.append(right[j])
-            j += 1
-
-    merged_arr.extend(left[i:])
-    merged_arr.extend(right[j:])
-
-    return merged_arr
+            for next_node, dist in graph[min_node]:
+                new_dist = min_dist + dist
+                if new_dist < distance[next_node]:
+                    distance[next_node] = new_dist
+                    heappush(heap, (new_dist, next_node))
 
 
-def merge_sort(arr):
-    mid = len(arr) // 2
+v, e = map(int, input().split())
+graph = [[] for _ in range(v + 1)]
+k = int(input())
 
-    if mid == 0:
-        return arr
+INF = 999999999
+distance = [INF] * (v + 1)
 
-    left_arr = merge_sort(arr[:mid])
-    right_arr = merge_sort(arr[mid:])
+# 인접 행렬 그래프
+for _ in range(e):
+    s, e, w = map(int, input().split())
+    graph[s].append([e, w])
 
-    return merge(left_arr, right_arr)
+dijkstra(k)
 
+answer = []
 
-for tc in range(1, int(input()) + 1):
-    n = int(input())
-    numbers = list(map(int, input().split()))
-    cnt = 0
+for idx in range(1, v + 1):
+    if distance[idx] == INF:
+        answer.append('INF')
+    else:
+        answer.append(distance[idx])
 
-    numbers = merge_sort(numbers)
-
-    print(f'#{tc} {numbers[n // 2]} {cnt}')
+print(*answer, sep='\n')
