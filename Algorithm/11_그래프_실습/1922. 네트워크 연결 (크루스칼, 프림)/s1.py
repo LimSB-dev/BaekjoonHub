@@ -2,46 +2,33 @@ import sys
 sys.stdin = open('input.txt', encoding='utf-8')
 
 
-def merge(left, right):
-    global cnt
+def find_set(node):
+    if node != parents[node]:
+        parents[node] = find_set(parents[node])
+    return parents[node]
 
-    if left[-1] > right[-1]:
+
+n = int(input())
+m = int(input())
+edges = [list(map(int, input().split())) for _ in range(m)]
+answer = 0
+
+# 비용을 기준으로 오름차순
+edges.sort(key=lambda x: x[2])
+
+parents = list(range(n + 1))
+cnt = 0
+cost = 0
+
+for v1, v2, fee in edges:
+    v1_root, v2_root = find_set(v1), find_set(v2)
+
+    if v1_root != v2_root:
+        parents[v2_root] = v1_root
+        cost += fee
         cnt += 1
 
-    merged_arr = []
-    i, j = 0, 0
+        if cnt >= n - 1:
+            break
 
-    while i < len(left) and j < len(right):
-        if left[i] < right[j]:
-            merged_arr.append(left[i])
-            i += 1
-        else:
-            merged_arr.append(right[j])
-            j += 1
-
-    merged_arr.extend(left[i:])
-    merged_arr.extend(right[j:])
-
-    return merged_arr
-
-
-def merge_sort(arr):
-    mid = len(arr) // 2
-
-    if mid == 0:
-        return arr
-
-    left_arr = merge_sort(arr[:mid])
-    right_arr = merge_sort(arr[mid:])
-
-    return merge(left_arr, right_arr)
-
-
-for tc in range(1, int(input()) + 1):
-    n = int(input())
-    numbers = list(map(int, input().split()))
-    cnt = 0
-
-    numbers = merge_sort(numbers)
-
-    print(f'#{tc} {numbers[n // 2]} {cnt}')
+print(cost)

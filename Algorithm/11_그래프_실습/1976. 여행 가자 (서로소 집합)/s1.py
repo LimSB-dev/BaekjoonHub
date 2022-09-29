@@ -2,46 +2,28 @@ import sys
 sys.stdin = open('input.txt', encoding='utf-8')
 
 
-def merge(left, right):
-    global cnt
-
-    if left[-1] > right[-1]:
-        cnt += 1
-
-    merged_arr = []
-    i, j = 0, 0
-
-    while i < len(left) and j < len(right):
-        if left[i] < right[j]:
-            merged_arr.append(left[i])
-            i += 1
-        else:
-            merged_arr.append(right[j])
-            j += 1
-
-    merged_arr.extend(left[i:])
-    merged_arr.extend(right[j:])
-
-    return merged_arr
+def find_set(node):
+    while node != parents[node]:
+        node = parents[node]
+    return node
 
 
-def merge_sort(arr):
-    mid = len(arr) // 2
+n = int(input())
+m = int(input())
+parents = list(range(n + 1))
+graph = [list(map(int, input().split())) for _ in range(n)]
+answer = 'YES'
 
-    if mid == 0:
-        return arr
+for row in range(n):
+    for col in range(n):
+        if graph[row][col] == 1:
+            parents[col + 1] = parents[row + 1]
 
-    left_arr = merge_sort(arr[:mid])
-    right_arr = merge_sort(arr[mid:])
+numbers = list(map(int, input().split()))
 
-    return merge(left_arr, right_arr)
+num = parents[numbers[0]]
+for number in numbers:
+    if parents[number] != num:
+        answer = 'NO'
 
-
-for tc in range(1, int(input()) + 1):
-    n = int(input())
-    numbers = list(map(int, input().split()))
-    cnt = 0
-
-    numbers = merge_sort(numbers)
-
-    print(f'#{tc} {numbers[n // 2]} {cnt}')
+print(answer)
