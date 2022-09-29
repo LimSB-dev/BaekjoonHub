@@ -2,35 +2,40 @@ import sys
 sys.stdin = open('input.txt', encoding='utf-8')
 
 
-def partition(arr, left, right):
-    pivot = arr[right]
-    i, j = left - 1, left
+def dijkstra(start):
+    visited = [False] * (n + 1)
+    visited[start] = True
+    distance[start] = 0
 
-    while j < right:
+    for end, dist in graph[start]:
+        distance[end] = dist
 
-        if pivot > arr[j]:
-            i += 1
+    for _ in range(n - 1):
+        min_dist = INF
 
-            if i < j:
-                arr[i], arr[j] = arr[j], arr[i]
+        for i in range(1, n + 1):
+            if not visited[i] and min_dist > distance[i]:
+                min_node = i
+                min_dist = distance[i]
 
-        j += 1
+        visited[min_node] = True
 
-    arr[i + 1], arr[right] = arr[right], arr[i + 1]
-
-    return i + 1
-
-
-def quick_sort(arr, left, right):
-
-    if left < right:
-        middle = partition(arr, left, right)
-        quick_sort(arr, left, middle - 1)
-        quick_sort(arr, middle + 1, right)
+        for next_node, dist in graph[min_node]:
+            new_dist = distance[min_node] + dist
+            if new_dist < distance[next_node]:
+                distance[next_node] = new_dist
 
 
+INF = 999999999
 for tc in range(1, int(input()) + 1):
-    numbers = list(map(int, input().split()))
-    quick_sort(numbers, 0, len(numbers) - 1)
+    n, e = map(int, input().split())
+    distance = [INF] * (n + 1)
+    graph = [[] for _ in range(e)]
 
-    print(f'#{tc} {numbers}')
+    for _ in range(e):
+        s, e, w = map(int, input().split())
+        graph[s]. append([e, w])
+
+    dijkstra(0)
+
+    print(f'#{tc} {distance[n]}')
