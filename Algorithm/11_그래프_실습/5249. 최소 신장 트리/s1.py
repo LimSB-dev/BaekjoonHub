@@ -1,36 +1,40 @@
 import sys
 sys.stdin = open('input.txt', encoding='utf-8')
+from heapq import heappush, heappop
 
 
-def partition(arr, left, right):
-    pivot = arr[right]
-    i, j = left - 1, left
+def prim(start):
+    visited = [False] * (v + 1)
+    heap = [(0, start)]
+    cost = 0
 
-    while j < right:
+    while heap:
 
-        if pivot > arr[j]:
-            i += 1
+        # 가장 적은 비용으로 이동 가능한 정점 찾기
+        min_dist, min_node = heappop(heap)
 
-            if i < j:
-                arr[i], arr[j] = arr[j], arr[i]
+        if not visited[min_node]:
 
-        j += 1
+            # 방문 처리
+            visited[min_node] = True
 
-    arr[i + 1], arr[right] = arr[right], arr[i + 1]
+            cost += min_dist
 
-    return i + 1
+            # 해당 정점과 인접한 정점에 대해 heappush
+            for next_node, dist in graph[min_node]:
+                if not visited[next_node]:
+                    heappush(heap, (dist, next_node))
 
-
-def quick_sort(arr, left, right):
-
-    if left < right:
-        middle = partition(arr, left, right)
-        quick_sort(arr, left, middle - 1)
-        quick_sort(arr, middle + 1, right)
+    return cost
 
 
 for tc in range(1, int(input()) + 1):
-    numbers = list(map(int, input().split()))
-    quick_sort(numbers, 0, len(numbers) - 1)
+    v, e = map(int, input().split())
+    graph = [[] for _ in range(v + 1)]
 
-    print(f'#{tc} {numbers}')
+    for _ in range(e):
+        v1, v2, w = map(int, input().split())
+        graph[v1].append([v2, w])
+        graph[v2].append([v1, w])
+
+    print(f'#{tc} {prim(0)}')
