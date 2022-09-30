@@ -1,35 +1,59 @@
 import sys
 sys.stdin = open('input.txt', encoding='utf-8')
 
-for tc in range(1, int(input()) + 1):
-    n, m = map(int, input().split())
-    matrix = [list(map(int, input().split())) for _ in range(n)]
-    people = 0
-    answer = 0
 
-    for row in matrix:
-        people += sum(row)
+def find_set(node):
+    if node != parent[node]:
+        parent[node] = find_set(parent[node])  # 경로 압축(Path compression)
+    return parent[node]
 
-    max_cost = people * m
 
-    k = 0
-    while True:
-        k += 1
-        cost = k * k + (k - 1) * (k - 1)
+def union(a, b):
+    a_root, b_root = find_set(a), find_set(b)
+    if a_root < b_root:
+        parent[b_root] = a_root
+    else:
+        parent[a_root] = b_root
 
-        if max_cost < cost:
+
+v = int(input())
+
+x_arr = []
+y_arr = []
+z_arr = []
+
+for i in range(v):
+    x, y, z = map(int, input().split())
+    x_arr.append([x, i])
+    y_arr.append([y, i])
+    z_arr.append([z, i])
+
+x_arr.sort()
+y_arr.sort()
+z_arr.sort()
+
+# 인접 행성들 사이의 간선
+edges = []
+for edge in x_arr, y_arr, z_arr:
+    for i in range(1, v):
+        w1, a = edge[i - 1]
+        w2, b = edge[i]
+        edges.append((abs(w1 - w2), a, b))
+
+edges.sort()
+
+parent = list(range(v + 1))
+counts = 0
+cost = 0
+
+for dist, x, y in edges:
+    x_root, y_root = find_set(x), find_set(y)
+    if x_root != y_root:
+        parent[y_root] = x_root
+        counts += 1
+        cost += dist
+
+        if counts >= v - 1:
             break
 
-        for row in range(n):
-            for col in range(n):
-                secure = 0
-                for r in range(n):
-                    for c in range(n):
-                        if k > abs(r - row) + abs(c - col):
-                            secure += matrix[r][c]
-
-                if cost <= secure * m:
-                    if answer < secure:
-                        answer = secure
-
-    print(f'#{tc} {answer}')
+print(cost)
