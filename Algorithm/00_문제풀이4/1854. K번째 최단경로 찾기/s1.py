@@ -13,7 +13,7 @@ def bfs(start, end):
         min_dist, min_node = queue.popleft()
 
         if min_node == end:
-            answer.append(min_dist)
+            answer.add(min_dist)
 
         for next_node, dist in graph[min_node]:
             new_dist = min_dist + dist
@@ -27,15 +27,15 @@ for _ in range(e):
     a, b, c = map(int, input().split())
     graph[b].append([a, c])
 
-
 for i in range(1, v + 1):
-    answer = []
+    answer = set()
     bfs(i, 1)
-    answer.sort()
 
     if len(answer) <= k:
         answer = -1
     else:
-        answer = list(set(answer))[k]
+        answer = list(answer)
+        answer.sort()
+        answer = answer[k - 1]
 
     print(answer)
