@@ -1,25 +1,41 @@
-for tc in range(1, int(input()) + 1):
+import sys
+sys.stdin = open('input.txt', encoding='utf-8')
+from heapq import heappush, heappop
 
-    # 요금
-    fees = list(map(int, input().split()))
 
-    # 월별 횟수
-    months = list(map(int, input().split()))
+def prim(start):
+    visited = [False] * (v + 1)
+    heap = [(0, start)]
+    cost = []
 
-    # 매달 최소 요금 저장 DP
-    dp = [0] * 13
 
-    for i in range(1, 13):
+    while heap:
 
-        # 1일 이용 금액과 1달 이용 금액 대소비교
-        dp[i] = min(dp[i-1] + months[i-1] * fees[0], dp[i-1] + fees[1])
+        min_dist, min_node = heappop(heap)
 
-        if i >= 3:
+        if not visited[min_node]:
+            visited[min_node] = True
+            cost.append(min_dist)
 
-            # 3달 이용 금액과 지금까지 최소 이용 금액 대소 비교
-            dp[i] = min(dp[i-3] + fees[2], dp[i])
+            for next_node, dist in graph[min_node]:
+                if not visited[next_node]:
+                    heappush(heap, (dist, next_node))
 
-    # 1년 이용 금액
-    answer = min(dp[12], fees[3])
+    return cost
 
-    print(f'#{tc} {answer}')
+
+v, e = map(int, input().split())
+graph = [[] for _ in range(v + 1)]
+
+# 인접 행렬 그래프
+for _ in range(e):
+    v1, v2, w = map(int, input().split())
+    graph[v1].append([v2, w])
+    graph[v2].append([v1, w])
+
+distance = prim(1)
+max_path = max(distance)
+answer = sum(distance)
+answer -= max_path
+
+print(answer)
