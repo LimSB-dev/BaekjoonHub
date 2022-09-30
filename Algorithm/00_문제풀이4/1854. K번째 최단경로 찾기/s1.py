@@ -1,30 +1,41 @@
-dx = [-1, 1, 0, 0]
-dy = [0, 0, -1, 1]
+import sys
+sys.stdin = open('input.txt', encoding='utf-8')
+from collections import deque
 
 
-def dfs(x, y, words):
-    words += matrix[y][x]
+def bfs(start, end):
+    global answer
 
-    if len(words) == 7:
-        answer.append(words)
-        return
+    queue = deque([[0, start]])
 
-    for direction in range(4):
-        nx = x + dx[direction]
-        ny = y + dy[direction]
+    while queue and len(answer) <= k:
 
-        if 0 <= nx < 4 and 0 <= ny < 4:
-            dfs(nx, ny, words)
+        min_dist, min_node = queue.popleft()
+
+        if min_node == end:
+            answer.append(min_dist)
+
+        for next_node, dist in graph[min_node]:
+            new_dist = min_dist + dist
+            queue.append([new_dist, next_node])
 
 
-for tc in range(1, int(input()) + 1):
-    matrix = [list(input().split()) for _ in range(4)]
+v, e, k = map(int, input().split())
+graph = [[] for _ in range(v + 1)]
+
+for _ in range(e):
+    a, b, c = map(int, input().split())
+    graph[b].append([a, c])
+
+
+for i in range(1, v + 1):
     answer = []
+    bfs(i, 1)
+    answer.sort()
 
-    for row in range(4):
-        for col in range(4):
-            dfs(col, row, '')
+    if len(answer) <= k:
+        answer = -1
+    else:
+        answer = list(set(answer))[k]
 
-    answer = set(answer)
-
-    print(f'#{tc} {len(answer)}')
+    print(answer)
