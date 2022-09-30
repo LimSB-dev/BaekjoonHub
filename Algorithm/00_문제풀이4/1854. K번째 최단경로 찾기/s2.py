@@ -1,5 +1,6 @@
 import sys
 sys.stdin = open('input.txt', encoding='utf-8')
+input = sys.stdin.readline
 from heapq import heappush, heappop
 
 
@@ -30,10 +31,13 @@ INF = 999999999
 distance = [[INF] * k for _ in range(v + 1)]
 dijkstra(1)
 
+answer = []
 for i in range(1, v + 1):
     if distance[i][k-1] == INF:
-        answer = -1
+        result = -1
     else:
-        answer = distance[i][k - 1]
+        result = distance[i][-1]
 
-    print(answer)
+    answer.append(result)
+
+print(*answer, sep='\n')
