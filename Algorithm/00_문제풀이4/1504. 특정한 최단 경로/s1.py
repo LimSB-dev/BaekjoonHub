@@ -1,30 +1,54 @@
-dx = [-1, 1, 0, 0]
-dy = [0, 0, -1, 1]
+import sys
+sys.stdin = open('input.txt', encoding='utf-8')
+from heapq import heappush, heappop
 
 
-def dfs(x, y, words):
-    words += matrix[y][x]
+def dijkstra(start):
+    distance[start] = 0
+    heap = [(0, start)]
 
-    if len(words) == 7:
-        answer.append(words)
-        return
+    while heap:
 
-    for direction in range(4):
-        nx = x + dx[direction]
-        ny = y + dy[direction]
+        min_dist, min_node = heappop(heap)
 
-        if 0 <= nx < 4 and 0 <= ny < 4:
-            dfs(nx, ny, words)
+        if min_dist <= distance[min_node]:
+
+            for next_node, dist in graph[min_node]:
+                new_dist = min_dist + dist
+                if new_dist < distance[next_node]:
+                    distance[next_node] = new_dist
+                    heappush(heap, (new_dist, next_node))
 
 
-for tc in range(1, int(input()) + 1):
-    matrix = [list(input().split()) for _ in range(4)]
-    answer = []
+v, e = map(int, input().split())
+graph = [[] for _ in range(v + 1)]
 
-    for row in range(4):
-        for col in range(4):
-            dfs(col, row, '')
+for _ in range(e):
+    a, b, c = map(int, input().split())
+    graph[a].append([b, c])
+    graph[b].append([a, c])
 
-    answer = set(answer)
+v1, v2 = map(int, input().split())
 
-    print(f'#{tc} {len(answer)}')
+INF = 999999999
+for i in range(3):
+    distance = [INF] * (v + 1)
+    if i == 0:
+        dijkstra(1)
+        one_v1 = distance[v1]
+        one_v2 = distance[v2]
+    elif i == 1:
+        dijkstra(v1)
+        v1_v2 = distance[v2]
+        v1_n = distance[v]
+    else:
+        dijkstra(v2)
+        v2_v1 = distance[v1]
+        v2_n = distance[v]
+
+answer = min((one_v1 + v1_v2 + v2_n), (one_v2 + v2_v1 + v1_n))
+
+if answer >= INF:
+    answer = -1
+
+print(answer)
