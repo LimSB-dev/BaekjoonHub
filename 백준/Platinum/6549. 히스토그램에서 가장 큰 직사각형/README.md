@@ -26,3 +26,6 @@
 
  <p>각 테스트 케이스에 대해서, 히스토그램에서 가장 넓이가 큰 직사각형의 넓이를 출력한다.</p>
 
+### 풀이
+
+<p style="text-align: center;"><img alt="" src="/Users/imseongbin/Downloads/GitHub/BaekjoonHub/assets/Baekjoon_6549.png" style="height:1520px; width:506px"></p>
