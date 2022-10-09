@@ -28,4 +28,4 @@
 
 ### 풀이
 
-<p style="text-align: center;"><img alt="" src="/Users/imseongbin/Downloads/GitHub/BaekjoonHub/assets/Baekjoon_6549.png" style="height:1520px; width:506px"></p>
+<p style="text-align: center;"><img alt="" src="assets/Baekjoon_6549.png" style="height:1754px; width:584px"></p>
