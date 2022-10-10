@@ -15,6 +15,9 @@ def find_min(chicken, houses):
 
         total += min_dist
 
+        if total > answer:
+            return INF
+
     return total
 
 
