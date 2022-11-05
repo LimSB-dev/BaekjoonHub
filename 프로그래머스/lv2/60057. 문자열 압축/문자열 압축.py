@@ -19,8 +19,7 @@ def solution(s):
     n = len(s)
     answer = n
     for i in range(1, (n // 2) + 1):
-        # 약수일 경우
-        # if n % i == 0:
+        
         word = find_min(s, i)
 
         if answer > len(word):
