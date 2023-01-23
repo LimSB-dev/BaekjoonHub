@@ -5,7 +5,6 @@ function solution(clothes) {
     clothes.forEach(e => {
         const category = e[1]
         
-        
         if (clothesCategory[category] === undefined) {
             clothesCategory[category] = [e[0]]
         } else {
