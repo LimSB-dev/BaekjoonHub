@@ -1,19 +1,19 @@
 function solution(clothes) {
     let answer = 1;
-    const clothes_category = {}
+    const clothesCategory = {}
     
-    clothes.forEach((e) => {
+    clothes.forEach(e => {
         const category = e[1]
         
         
-        if (clothes_category[category] === undefined) {
-            clothes_category[category] = [e[0]]
+        if (clothesCategory[category] === undefined) {
+            clothesCategory[category] = [e[0]]
         } else {
-            clothes_category[category].push(e[0])
+            clothesCategory[category].push(e[0])
         }
     })
 
-    for (const [key, value] of Object.entries(clothes_category)) {
+    for (const [key, value] of Object.entries(clothesCategory)) {
         answer *= (value.length + 1)
     }
     
