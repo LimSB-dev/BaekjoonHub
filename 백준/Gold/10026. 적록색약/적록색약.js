@@ -24,7 +24,7 @@ function dfs(x, y) {
         continue;
       }
       // 같은 색상이라면 재귀적으로 dfs() 호출
-      if (graph[x][y] == graph[nx][ny]) {
+      if (graph[x][y] === graph[nx][ny]) {
         dfs(nx, ny);
       }
     }
@@ -48,7 +48,7 @@ for (let i = 0; i < n; i++) {
 // R → G 변환 이후에 다시 한 번 연결 요소 세기
 for (let i = 0; i < n; i++) {
   for (let j = 0; j < n; j++) {
-    if (graph[i][j] == 'R') graph[i][j] = 'G';
+    if (graph[i][j] === 'R') graph[i][j] = 'G';
   }
 }
 
