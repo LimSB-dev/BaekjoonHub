@@ -25,12 +25,12 @@ function solution(maps) {
             value = Number(value)
             
             // 큐 생성
-            const queue = [[i, j, value]]
+            const queue = [[i, j]]
 
             while(queue.length !== 0) {
 
                 // 큐 추출
-                let [r, c, v] = queue.shift()
+                let [r, c] = queue.shift()
                 
                 // 상 하 좌 우 확인
                 for(let i = 0; i < 4; i++) {
@@ -46,12 +46,11 @@ function solution(maps) {
 
                     // 방문 처리
                     matrix[nr][nc] = 'X'
-                    nv = Number(nv)
                     
-                    value += nv
+                    value += Number(nv)
                     
                     // 큐 추가       
-                    queue.push([nr, nc, nv])
+                    queue.push([nr, nc])
                 }
             }
             
