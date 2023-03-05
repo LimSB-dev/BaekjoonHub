@@ -1,30 +1,13 @@
 function solution(n, m, section) {
-    let answer = 0;
-    let wall = new Array(n).fill(true)
-    let i = 0
+    let answer = 0
+    let cur = 0
     
-    wall = wall.map((e, idx) => {
-        return section.includes(idx + 1) ? false : true
+    section.forEach(e => {
+        if (cur < e) {
+            cur = e + m - 1
+            answer++
+        }
     })
     
-    while (true) {
-        if (i > n - m) {
-            break
-        }
-        
-        if (!wall[i]) {
-            for (let j = 0; j < m; j++) {
-                wall[i + j] = true
-            }
-            
-            i += m
-            answer++ 
-        } else {
-            i++
-        }
-    }
-    
-    if (wall.includes(false)) answer++
-    
-    return answer;
+    return answer
 }
