@@ -1,24 +1,66 @@
-function solution(n, computers) {
-    let answer = 0
-    let visited = new Array(n).fill(false)
-    
-    // DFS 함수
-    const dfs = (computers, visited, idx) => {
-        visited[idx] = true;
-        for (let i = 0; i < computers.length; i++) {
-            if (computers[idx][i] === 1 && !visited[i]) {
-                dfs(computers, visited, i);
-            }
-        }
-    }  
-    
-    // 모든 컴퓨터에 대해 DFS 수행
-    for (let i = 0; i < n; i++) {
-        if (!visited[i]) {
-            dfs(computers, visited, i);
-            answer++;
+// 유니온 파인드 알고리즘
+class UnionFind {
+    constructor(size) {
+        this.parent = new Array(size)
+        this.rank = new Array(size)
+        
+        // Initialize each element as a separate set
+        for (let i =0; i < size; i++) {
+            this.parent[i] = i
+            this.rank[i] = 0
         }
     }
     
-    return answer
+    // Find the parent of a node and perform path compression
+    find(x) {
+        if (this.parent[x] !== x) {
+            this.parent[x] = this.find(this.parent[x])
+        }
+        return this.parent[x]
+    }
+    
+    // Union two sets by rank
+    union(x, y) {
+        let px = this.find(x)
+        let py = this.find(y)
+        
+        if (px === py) {
+            return false
+        }
+        
+        if (this.rank[px] < this.rank[py]) {
+            this.parent[px] = py
+        } else if (this.rank[px] > this.rank[py]) {
+            this.parent[py] = px
+        } else {
+            this.parent[py] = px
+            this.rank[px]++
+        }
+        
+        return true
+    }
+    
+    size() {
+        console.log(this.parent)
+        const parentSet = new Set(this.parent)
+        
+        return parentSet.size
+    }
+}
+
+
+function solution(n, computers) {
+    let answer = 0
+    
+    const uf = new UnionFind(n)
+    
+    computers.forEach(computer => {
+        const [x, y] = computer
+        
+        uf.union(x, y)
+    })
+    
+    console.log(uf)
+    
+    return uf.size()
 }
