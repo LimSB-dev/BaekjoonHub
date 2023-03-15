@@ -13,6 +13,4 @@ def solution(n):
             nextValue = (dp[1] * 4 - dp[0]) % MOD
             dp = [dp[1], nextValue]
         
-        print(dp)
-        
         return dp[1]
