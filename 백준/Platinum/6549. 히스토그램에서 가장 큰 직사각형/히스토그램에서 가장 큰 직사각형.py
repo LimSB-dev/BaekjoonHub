@@ -1,3 +1,7 @@
+from sys import stdin
+
+input = stdin.readline
+
 while True:
     n, *numbers = list(map(int, input().split()))
 

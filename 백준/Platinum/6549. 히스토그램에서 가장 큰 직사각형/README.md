@@ -4,11 +4,11 @@
 
 ### 성능 요약
 
-메모리: 141760 KB, 시간: 220 ms
+메모리: 47140 KB, 시간: 384 ms
 
 ### 분류
 
-자료 구조(data_structures), 분할 정복(divide_and_conquer), 세그먼트 트리(segtree), 스택(stack)
+자료 구조, 세그먼트 트리, 분할 정복, 스택
 
 ### 문제 설명
 
@@ -26,6 +26,3 @@
 
  <p>각 테스트 케이스에 대해서, 히스토그램에서 가장 넓이가 큰 직사각형의 넓이를 출력한다.</p>
 
-### 풀이
-
-<p style="text-align: center;"><img alt="" src="/assets/Baekjoon_6549.png" style="height:1754px; width:584px"></p>
