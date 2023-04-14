@@ -3,14 +3,10 @@ function check(curYear, curMonth, curDay, year, month, day, value) {
     month += value
     
     if (month > 12) {
-        year += Math.floor(month / 12);
-        month = month % 12;
+        year += Math.floor((month - 1) / 12);
+        month = (month - 1) % 12 + 1;
     }
-    
-    if (month === 0) {
-        month = 12
-        year--
-    }
+
     
     if (curYear !== year) {
         return curYear > year
