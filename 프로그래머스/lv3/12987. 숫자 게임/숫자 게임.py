@@ -1,12 +1,17 @@
+from collections import deque
+
+
 def solution(A, B):
     answer = 0
     A.sort()
     B.sort()
+    A = deque(A)
+    B = deque(B)
     while B:
         if A[0] < B[0]:
             answer += 1
-            A.pop(0)
-            B.pop(0)
+            A.popleft()
+            B.popleft()
         else:
-            B.pop(0)
+            B.popleft()
     return answer
