@@ -1,33 +1,41 @@
-from itertools import product
+data = [10 ,20, 30, 40]
+discount = []
 
-discounts = (10, 20, 30, 40)
-result = [0, 0]
+def dfs(temp, depth):
+    
+    if depth == len(temp):
+        discount.append(temp[:])
+        return
+    
+    for d in data:
+        temp[depth] += d
+        dfs(temp, depth + 1)
+        temp[depth] -= d
+
 
 def solution(users, emoticons):
-    global discounts
-    global result
+    max_users = 0
+    max_price = 0
     
-    for _discounts in product(discounts, repeat=len(emoticons)):
-        curr_result = check(users, emoticons, _discounts)
-        if result[0] < curr_result[0] or (result[0] == curr_result[0] and result[1] < curr_result[1]):
-            result = curr_result
-
-    return result
-
-
-def check(users, emoticons, discounts):
-    global result
+    dfs([0] * len(emoticons), 0)
     
-    subscribe = purchased_emoticons = 0
-    for discount_threshold, budget in users:
-        purchased = 0
-        for emoticon, discount in zip(emoticons, discounts):
-            if discount_threshold <= discount:
-                purchased += emoticon * (100 - discount) // 100
-
-        if budget <= purchased:
-            subscribe += 1
-        else:
-            purchased_emoticons += purchased
-
-    return [subscribe, purchased_emoticons]
+    for d in range(len(discount)):
+        join, price = 0, [0] * len(users)
+        for e in range(len(emoticons)):
+            for u in range(len(users)):
+                if users[u][0] <= discount[d][e]:
+                    price[u] += emoticons[e] * (100 - discount[d][e]) / 100
+        
+        for u in range(len(users)):
+            if price[u] >= users[u][1]:
+                join += 1
+                price[u] = 0
+        
+        if join >= max_users:
+            if join == max_users:
+                max_price = max(max_price, sum(price))
+            else:
+                max_price = sum(price)
+            max_users = join
+        
+    return max_users, max_price
