@@ -1,10 +1,19 @@
-C=int(input())
-while C>0:
-  over = 0
-  S=list(map(int,input().split()))
-  Av = (sum(S)-S[0])/S[0]
-  for i in S[1:]:
-    if i > Av:
-      over += 1
-  print(f'{over/S[0]*100:.3f}%')
-  C -=1
+import sys
+input = sys.stdin.readline
+
+C = int(input())
+for _ in range(C):
+    arr = list(map(int, input().split()))
+    N = arr[0]
+    arr = arr[1:]
+
+    avg = sum(arr) / N
+
+    over_avg = 0
+    for i in arr:
+        if i > avg:
+            over_avg += 1
+
+    answer = over_avg / N * 100
+
+    print(f'{answer:.3f}%')
