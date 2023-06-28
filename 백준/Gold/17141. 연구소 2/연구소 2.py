@@ -1,71 +1,53 @@
+import sys
 from itertools import combinations
-from copy import deepcopy
 from collections import deque
+input = sys.stdin.readline
 
-# 상 하 좌 우
-dr = [-1, 1, 0, 0]
-dc = [0, 0, -1, 1]
+N, M = map(int, input().split())
+matrix = [list(map(int, input().split())) for _ in range(N)]
+disabled_virus = []
+min_time = float('inf')
 
+for row in range(N):
+    for col in range(N):
+        if matrix[row][col] == 2:
+            disabled_virus.append((row, col, 3))
 
-def bfs(virous):
+def spread_virus(virus):
+    visited = [[0] * N for _ in range(N)]
+    queue = deque()
 
-    for row, col in virous:
-        lab[row][col] = 3
-
-    queue = deque(virous)
+    for row, col, time in virus:
+        queue.append((row, col, time))
+        visited[row][col] = time
 
     while queue:
+        row, col, time = queue.popleft()
 
-        r, c = queue.popleft()
+        for dr, dc in [(0, 1), (1, 0), (0, -1), (-1, 0)]:
+            nr, nc = row + dr, col + dc
+            if 0 <= nr < N and 0 <= nc < N and matrix[nr][nc] != 1 and visited[nr][nc] == 0:
+                next_time = time + 1
+                visited[nr][nc] = next_time
+                queue.append((nr, nc, next_time))
 
-        day = lab[r][c]
+    max_time = 0
+    for row in range(N):
+        for col in range(N):
+            # 벽이 아닌 공간일 경우
+            if matrix[row][col] != 1:
+                # 바이러스가 퍼지지 않은 공간이 있을 경우
+                if visited[row][col] == 0:
+                    return -1
+                
+                max_time = max(max_time, visited[row][col])
 
-        for direction in range(4):
-            nr = r + dr[direction]
-            nc = c + dc[direction]
-
-            if 0 <= nr < n and 0 <= nc < n:
-                value = lab[nr][nc]
-
-                if value == 2 or value == 0:
-                    lab[nr][nc] = day + 1
-                    queue.append([nr, nc])
-
-    for row in range(n):
-        for col in range(n):
-            value = lab[row][col]
-
-            if value == 0:
-                return -1
-
-    return day - 3
+    return max_time - 3
 
 
-INF = 999999999
-n, m = map(int, input().split())
-matrix = [list(map(int, input().split())) for _ in range(n)]
-answer = INF
-virous = []
+for virus in combinations(disabled_virus, M):
+    result = spread_virus(virus)
+    if result != -1:
+        min_time = min(min_time, result)
 
-for row in range(n):
-    for col in range(n):
-        value = matrix[row][col]
-
-        if value == 2:
-            virous.append([row, col])
-
-for arr in combinations(virous, m):
-    lab = deepcopy(matrix)
-
-    min_day = bfs(arr)
-
-    if min_day < answer <= INF and min_day != -1:
-        answer = min_day
-
-    if answer == -1 and min_day != -1:
-        answer = min_day
-
-if answer == INF:
-    answer = -1
-
-print(answer)
+print(min_time if min_time != float('inf') else -1)
