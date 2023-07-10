@@ -19,7 +19,3 @@
 ### 3. 풀었다고 완전히 내것이 아니다.
 
 > 주석을 달면서 어떤 과정을 통해 해결했는지 첨삭해보자.<br>본인이 어떤 접근법을 가지고 문제를 풀어나갔는지 정확히 인지하는게 중요하다.
-
-<br>
-
-[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FLimSB-dev%2FBaekjoonHub&count_bg=%23344765&title_bg=%23102040&icon=&icon_color=%23344765&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
