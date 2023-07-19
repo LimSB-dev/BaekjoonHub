@@ -3,30 +3,30 @@ sys.setrecursionlimit(10**6)
 input = sys.stdin.readline
 
 
-nodes = []
-while True:
-    try:
-        nodes.append(int(input()))
-    except:
-        break
-
-
-def get_post_order(nodes):
-    if not nodes:
+def get_postorder(preorder, start, end):
+    if start > end:
         return []
 
-    root = nodes[0]
-    left = []
-    right = []
+    root = preorder[start]
+    idx = start + 1
 
-    for node in nodes[1:]:
-        if node < root:
-            left.append(node)
-        else:
-            right.append(node)
+    while idx <= end and preorder[idx] < root:
+        idx += 1
 
-    return get_post_order(left) + get_post_order(right) + [root]
+    left_subtree = get_postorder(preorder, start + 1, idx - 1)
+    right_subtree = get_postorder(preorder, idx, end)
+
+    return [*left_subtree, *right_subtree, root]
 
 
-for node in get_post_order(nodes):
+preorder_traversal = []
+
+for line in sys.stdin:
+    node_value = int(line)
+    preorder_traversal.append(node_value)
+
+postorder_traversal = get_postorder(
+    preorder_traversal, 0, len(preorder_traversal) - 1)
+
+for node in postorder_traversal:
     print(node)
