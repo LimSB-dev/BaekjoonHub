@@ -22,9 +22,8 @@ for row in range(m):
                 r, c = stack.pop()
                 for dr, dc in direction:
                     nr, nc = r + dr, c + dc
-                    if 0 <= nr < m and 0 <= nc < n and not visited[nr][nc]:
+                    if 0 <= nr < m and 0 <= nc < n and not visited[nr][nc] and matrix[nr][nc] == 1:
                         visited[nr][nc] = True
-                        if matrix[nr][nc] == 1:
-                            stack.append((nr, nc))
+                        stack.append((nr, nc))
 
 print(answer)
