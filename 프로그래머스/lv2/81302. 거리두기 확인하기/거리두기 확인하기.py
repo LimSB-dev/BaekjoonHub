@@ -1,41 +1,40 @@
-# 상, 하, 좌, 우
-dx = [0, 0, -1, 1]
-dy = [-1, 1, 0, 0]
+def is_valid(x, y):
+    return 0 <= x < 5 and 0 <= y < 5
 
+def check_surrounding(place, x, y):
+    dx = [0, 0, -1, 1]
+    dy = [-1, 1, 0, 0]
 
-def dfs(place):
-    answer = 1
+    visited = [[False] * 5 for _ in range(5)]
+    visited[x][y] = True
+
+    queue = [(x, y, 0)]
+
+    while queue:
+        x, y, dist = queue.pop(0)
+
+        if dist == 2:
+            break
+
+        for i in range(4):
+            nx = x + dx[i]
+            ny = y + dy[i]
+
+            if is_valid(nx, ny) and not visited[nx][ny] and place[nx][ny] != 'X':
+                visited[nx][ny] = True
+                if place[nx][ny] == 'P':
+                    return False
+                queue.append((nx, ny, dist + 1))
+
+    return True
+
+def sol(place):
     for row in range(5):
         for col in range(5):
-            visited = [[False] * 5 for _ in range(5)]
-            visited[row][col] = True
             if place[row][col] == 'P':
-                for direction1 in range(4):
-                    nx1 = row + dx[direction1]
-                    ny1 = col + dy[direction1]
-                    if 0 <= nx1 < 5 and 0 <= ny1 < 5 and not visited[nx1][ny1] and place[nx1][ny1] != 'X':
-                        visited[nx1][ny1] = True
-                        if place[nx1][ny1] == 'P':
-                            answer = 0
-                            break
-                        for direction2 in range(4):
-                            nx2 = nx1 + dx[direction2]
-                            ny2 = ny1 + dy[direction2]
-                            if 0 <= nx2 < 5 and 0 <= ny2 < 5 and not visited[nx2][ny2] and place[nx2][ny2] != 'X':
-                                visited[nx2][ny2] = True
-                                if place[nx2][ny2] == 'P':
-                                    answer = 0
-                                    break
-                            if answer == 0:
-                                break
-                        if answer == 0:
-                            break
-            if answer == 0:
-                break
-    return answer
+                if not check_surrounding(place, row, col):
+                    return 0
+    return 1
 
 def solution(places):
-    arr = []
-    for place in places:
-        arr.append(dfs(place))
-    return arr
+    return [sol(place) for place in places]
