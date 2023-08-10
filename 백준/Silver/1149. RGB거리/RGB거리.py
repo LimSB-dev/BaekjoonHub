@@ -1,18 +1,14 @@
+import sys
+input = sys.stdin.readline
+
 n = int(input())
-dp = []
+colors = [list(map(int, input().split())) for _ in range(n)]
+r, g, b = colors[0]
+dp = [[r, g, b]] + [[0, 0, 0] for _ in range(n - 1)]
 
-for _ in range(n):
-  r,g,b = map(int,input().split())
-  dp.append([r,g,b])
+for i in range(1, n):
+    dp[i][0] = colors[i][0] + min(dp[i - 1][1], dp[i - 1][2])
+    dp[i][1] = colors[i][1] + min(dp[i - 1][0], dp[i - 1][2])
+    dp[i][2] = colors[i][2] + min(dp[i - 1][0], dp[i - 1][1])
 
-table = [[0 for _ in range(3)] for _ in range(n)]
-
-for i in range(n):
-  for j in range(3):
-    if i == 0:
-      table[i][j] = dp[i][j]
-    else:
-      table[i][j] = min(table[i-1][(j+1)%3], table[i-1][(j+2)%3]) + dp[i][j]
-
-print(min(table[-1]))
-  
+print(min(dp[-1]))
