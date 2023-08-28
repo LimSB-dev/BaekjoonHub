@@ -12,7 +12,6 @@ for x, d, k in rotations:
         else:
             disks[i-1] = disks[i-1][k:] + disks[i-1][:k]
 
-    # 인접한 수가 같은 것을 찾아서 지우기
     adj = []
     for i in range(n):
         for j in range(m):
@@ -31,16 +30,17 @@ for x, d, k in rotations:
         for i, j in adj:
             disks[i][j] = 0
     else:
-        total = 0
-        cnt = 0
+        total_sum = 0
+        total_cnt = 0
         for i in range(n):
             for j in range(m):
                 if disks[i][j] == 0:
                     continue
-                total += disks[i][j]
-                cnt += 1
-        if cnt:
-            avg = total / cnt
+                total_sum += disks[i][j]
+                total_cnt += 1
+
+        if total_cnt:
+            avg = total_sum / total_cnt
             for i in range(n):
                 for j in range(m):
                     if disks[i][j] == 0:
@@ -50,10 +50,7 @@ for x, d, k in rotations:
                     elif disks[i][j] < avg:
                         disks[i][j] += 1
 
-ans = 0
 
-for i in range(n):
-    for j in range(m):
-        ans += disks[i][j]
+answer = sum(map(sum, disks))
 
-print(ans)
+print(answer)
