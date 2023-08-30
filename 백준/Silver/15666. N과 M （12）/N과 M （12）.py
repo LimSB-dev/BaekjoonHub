@@ -3,20 +3,19 @@ input = sys.stdin.readline
 
 n, m = map(int, input().split())
 arr = sorted(set(map(int, input().split())))
-permutation = []
-answer = []
+answer = [0]
 
 
 def dfs(depth):
     if depth == m:
-        answer.append(tuple(sorted(permutation)))
+        print(*answer[1:])
         return
     for i in arr:
-        permutation.append(i)
+        if i < answer[-1]:
+            continue
+        answer.append(i)
         dfs(depth+1)
-        permutation.pop()
+        answer.pop()
 
 
 dfs(0)
-
-print('\n'.join(' '.join(map(str, i)) for i in sorted(set(answer))))
